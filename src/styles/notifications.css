@@ -1,0 +1,16 @@
+.cg-modal-backdrop{position:fixed;inset:0;background:rgba(0,0,0,0.45);display:flex;align-items:center;justify-content:center;z-index:9999}
+.cg-modal{background:#fff;border-radius:10px;padding:20px;max-width:420px;width:92%;box-shadow:0 10px 30px rgba(2,6,23,0.2);border:1px solid rgba(15,23,42,0.05)}
+.cg-modal-title{margin:0 0 8px;font-size:18px}
+.cg-modal-message{color:#334155;margin-bottom:16px}
+.cg-modal-actions{display:flex;gap:8px;justify-content:flex-end}
+.cg-btn{padding:8px 12px;border-radius:8px;border:none;cursor:pointer;font-weight:600}
+.cg-btn:disabled{opacity:0.6;cursor:not-allowed}
+.cg-btn-secondary{background:#eef2ff;color:#3730a3}
+.cg-btn-danger{background:#fee2e2;color:#b91c1c}
+
+/* Toast */
+.cg-toast{position:fixed;right:20px;bottom:20px;padding:12px 16px;border-radius:10px;color:#fff;z-index:10000;box-shadow:0 6px 18px rgba(2,6,23,0.15);cursor:pointer}
+.cg-toast.info{background:linear-gradient(90deg,#111827,#374151)}
+.cg-toast.success{background:linear-gradient(90deg,#059669,#10b981)}
+.cg-toast.error{background:linear-gradient(90deg,#b91c1c,#ef4444);right:20px;top:20px;bottom:auto}
+.cg-toast-content{font-weight:600}

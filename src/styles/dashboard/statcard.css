@@ -1,0 +1,63 @@
+.grid-4 {
+  display: grid;
+  gap: 20px;
+
+  grid-template-columns:
+    repeat(4, 1fr);
+}
+
+.stat-card {
+  background: white;
+
+  border: 1px solid #e2e8f0;
+
+  border-radius: 22px;
+
+  padding: 20px;
+
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.stat-card p {
+  color: #64748b;
+}
+
+.stat-card h3 {
+  margin-top: 8px;
+  font-size: 28px;
+}
+
+.stat-icon {
+  width: 46px;
+  height: 46px;
+
+  background: #ecfdf5;
+
+  border-radius: 16px;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+@media (max-width: 1000px) {
+  .grid-4 {
+    grid-template-columns: 1fr;
+  }
+}
+
+.grid-3 {
+  display: grid;
+  gap: 20px;
+
+  grid-template-columns:
+    repeat(3, 1fr);
+}
+
+@media (max-width: 1000px) {
+  .grid-3 {
+    grid-template-columns: 1fr;
+  }
+}

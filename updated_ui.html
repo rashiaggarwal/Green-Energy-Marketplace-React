@@ -1,0 +1,1694 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GreenGrid Exchange Interactive Mockup</title>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      background: #f8fafc;
+      color: #0f172a;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 270px;
+      background: #fff;
+      border-right: 1px solid #e2e8f0;
+      padding: 24px;
+      position: fixed;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .logo-icon {
+      width: 48px;
+      height: 48px;
+      background: #059669;
+      color: #fff;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+    }
+
+    .logo h1 {
+      font-size: 20px;
+    }
+
+    .logo p {
+      color: #64748b;
+      font-size: 12px;
+      margin-top: 3px;
+    }
+
+    .nav {
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .nav button {
+      border: none;
+      background: transparent;
+      text-align: left;
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-weight: 700;
+      color: #475569;
+      cursor: pointer;
+    }
+
+    .nav button.active,
+    .nav button:hover {
+      background: #0f172a;
+      color: white;
+    }
+
+    .wallet-box {
+      margin-top: auto;
+      background: #0f172a;
+      color: white;
+      border-radius: 22px;
+      padding: 18px;
+    }
+
+    .wallet-box small {
+      color: #cbd5e1;
+    }
+
+    .wallet-box p {
+      margin-top: 8px;
+      font-family: monospace;
+      word-break: break-all;
+      font-size: 13px;
+    }
+
+    .main {
+      margin-left: 270px;
+      width: calc(100% - 270px);
+    }
+
+    .topbar {
+      background: rgba(255,255,255,0.9);
+      border-bottom: 1px solid #e2e8f0;
+      padding: 20px 32px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+      backdrop-filter: blur(10px);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .topbar p {
+      color: #64748b;
+      margin-top: 4px;
+      font-size: 14px;
+    }
+
+    .wallet-pill {
+      background: #0f172a;
+      color: white;
+      border-radius: 16px;
+      padding: 12px 16px;
+      font-family: monospace;
+      font-size: 13px;
+    }
+
+    .content {
+      padding: 32px;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .screen {
+      display: none;
+    }
+
+    .screen.active {
+      display: block;
+    }
+
+    .page-title {
+      margin-bottom: 24px;
+    }
+
+    .page-title h2 {
+      font-size: 28px;
+    }
+
+    .page-title p {
+      color: #64748b;
+      margin-top: 6px;
+    }
+
+    .grid {
+      display: grid;
+      gap: 20px;
+    }
+
+    .grid-3 {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    .grid-4 {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    .span-2 {
+      grid-column: span 2;
+    }
+
+    .card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 26px;
+      padding: 24px;
+      box-shadow: 0 8px 24px rgba(15,23,42,0.04);
+    }
+
+    .card-title {
+      font-size: 20px;
+      font-weight: 800;
+      margin-bottom: 18px;
+    }
+
+    .field-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 16px;
+    }
+
+    label {
+      font-size: 13px;
+      font-weight: 700;
+      color: #334155;
+      display: block;
+      margin-bottom: 8px;
+    }
+
+    input,
+    select {
+      width: 100%;
+      border: 1px solid #cbd5e1;
+      border-radius: 14px;
+      padding: 13px 14px;
+      font-size: 14px;
+      outline: none;
+      background: white;
+    }
+
+    .btn-row {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 22px;
+      justify-content: flex-start;
+    }
+
+    .btn {
+      border: none;
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-weight: 800;
+      background: #0f172a;
+      color: white;
+      cursor: pointer;
+    }
+
+    .btn.green {
+      background: #059669;
+    }
+
+    .btn.red {
+      background: #dc2626;
+    }
+
+    .btn.blue {
+      background: #2563eb;
+    }
+
+    .btn.orange {
+      background: #ea580c;
+    }
+
+    .btn.outline {
+      background: white;
+      color: #0f172a;
+      border: 1px solid #cbd5e1;
+    }
+
+    .btn:disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
+    }
+
+    .stat-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 22px;
+      padding: 20px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .stat-card p {
+      color: #64748b;
+      font-size: 14px;
+    }
+
+    .stat-card h3 {
+      margin-top: 6px;
+      font-size: 28px;
+    }
+
+    .stat-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 16px;
+      background: #ecfdf5;
+      color: #047857;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+    }
+
+    .hero {
+      background: #0f172a;
+      color: white;
+      border-radius: 26px;
+      padding: 26px;
+      margin-bottom: 24px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 20px;
+    }
+
+    .hero p {
+      color: #cbd5e1;
+      margin-top: 6px;
+    }
+
+    .hero-wallet {
+      background: rgba(255,255,255,0.1);
+      border-radius: 20px;
+      padding: 18px;
+      font-family: monospace;
+      word-break: break-all;
+    }
+
+    .credit-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      padding: 20px;
+    }
+
+    .credit-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: start;
+      margin-bottom: 16px;
+      gap: 10px;
+    }
+
+    .badge {
+      padding: 6px 12px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      white-space: nowrap;
+    }
+
+    .green-badge {
+      background: #dcfce7;
+      color: #047857;
+    }
+
+    .blue-badge {
+      background: #e0f2fe;
+      color: #0369a1;
+    }
+
+    .orange-badge {
+      background: #ffedd5;
+      color: #c2410c;
+    }
+
+    .gray-badge {
+      background: #e2e8f0;
+      color: #475569;
+    }
+
+    .purple-badge {
+      background: #ede9fe;
+      color: #6d28d9;
+    }
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      padding: 7px 0;
+      font-size: 14px;
+      gap: 12px;
+    }
+
+    .row span:first-child {
+      color: #64748b;
+    }
+
+    .row span:last-child {
+      font-weight: 800;
+      text-align: right;
+    }
+
+    .toolbar {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 22px;
+      padding: 16px;
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .filters {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+    }
+
+    .filters button {
+      border: 1px solid #cbd5e1;
+      background: white;
+      border-radius: 14px;
+      font-weight: 800;
+      cursor: pointer;
+      padding: 12px 8px;
+    }
+
+    .filters button.active {
+      background: #0f172a;
+      color: white;
+    }
+
+    .audit-item {
+      border: 1px solid #e2e8f0;
+      border-radius: 18px;
+      padding: 16px;
+      background: white;
+    }
+
+    .audit-number {
+      background: #0f172a;
+      color: white;
+      width: 34px;
+      height: 34px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      margin-bottom: 10px;
+    }
+
+    .audit-search-box {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .audit-result {
+      margin-bottom: 18px;
+    }
+
+    .result-success {
+      background: #ecfdf5;
+      border: 1px solid #bbf7d0;
+      border-radius: 14px;
+      padding: 14px;
+      color: #047857;
+    }
+
+    .result-error {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+      border-radius: 14px;
+      padding: 14px;
+      color: #b91c1c;
+    }
+
+    .result-neutral {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 14px;
+      color: #64748b;
+    }
+
+    .supply-list {
+      margin-top: 16px;
+      display: grid;
+      gap: 10px;
+      max-height: 330px;
+      overflow: auto;
+      padding-right: 4px;
+    }
+
+    .supply-item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border: 1px solid #e2e8f0;
+      border-radius: 14px;
+      padding: 12px;
+      background: #fff;
+      font-size: 14px;
+      color: #334155;
+    }
+
+    .chat-box {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .message {
+      padding: 16px;
+      border-radius: 20px;
+      max-width: 75%;
+      line-height: 1.5;
+      font-size: 14px;
+    }
+
+    .message.user {
+      background: #0f172a;
+      color: white;
+      align-self: flex-end;
+    }
+
+    .message.ai {
+      background: #f1f5f9;
+      color: #334155;
+      align-self: flex-start;
+    }
+
+    .toast {
+      position: fixed;
+      right: 24px;
+      bottom: 24px;
+      background: #0f172a;
+      color: white;
+      border-radius: 16px;
+      padding: 14px 18px;
+      display: none;
+      z-index: 100;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+    }
+
+    @media (max-width: 1100px) {
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .grid-4,
+      .grid-3,
+      .field-grid,
+      .toolbar,
+      .hero,
+      .audit-search-box {
+        grid-template-columns: 1fr;
+      }
+
+      .span-2 {
+        grid-column: span 1;
+      }
+
+      .wallet-pill {
+        display: none;
+      }
+
+      .content {
+        padding: 20px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="app">
+    <aside class="sidebar">
+      <div class="logo">
+        <div class="logo-icon">⚡</div>
+        <div>
+          <h1>Green Energy Marketplace</h1>
+          <p>Peer-to-Peer Renewable Energy Trading</p>
+        </div>
+      </div>
+
+      <nav class="nav">
+        <button class="active" onclick="showScreen('registration')">👤 Login / Register</button>
+        <button onclick="showScreen('home')">🏠 Home</button>
+        <button onclick="showScreen('credits')">➕ Credit Actions</button>
+        <button onclick="showScreen('marketplace')">🛒 Marketplace</button>
+        <button onclick="showScreen('ai')">🤖 AI/RAG</button>
+      </nav>
+
+      <div class="wallet-box">
+        <small>Connected Wallet</small>
+        <p id="sidebarWallet">Not connected</p>
+        <div class="status" id="sidebarStatus">Pending</div>
+      </div>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <div>
+          <h2>Green Energy Marketplace</h2>
+          <p>Peer-to-Peer Renewable Energy Trading</p>
+        </div>
+        <div class="wallet-pill" id="topWallet">Wallet not connected</div>
+      </header>
+
+      <section class="content">
+
+        <!-- AUTH SCREEN -->
+        <div id="registration" class="screen active">
+          <div class="page-title">
+            <h2>1. Login / Registration</h2>
+            <p>User can login with username and password, or register a new account with MetaMask verification.</p>
+          </div>
+
+          <div class="card" style="margin-bottom:24px;">
+            <div class="btn-row" style="margin-top:0;">
+              <button id="loginTabBtn" class="btn" onclick="showAuthForm('login')">Login</button>
+              <button id="registerTabBtn" class="btn outline" onclick="showAuthForm('register')">Register</button>
+            </div>
+          </div>
+
+          <!-- LOGIN FORM -->
+          <div id="loginForm" class="grid grid-3">
+            <div class="card span-2">
+              <div class="card-title">🔐 Login</div>
+
+              <div class="field-grid">
+                <div>
+                  <label>Username</label>
+                    <input
+                      id="email"
+                      placeholder="Enter email"
+                    />
+                </div>
+                <div>
+                  <label>Password</label>                   
+                    <input
+                      id="loginPassword"
+                      type="password"
+                      placeholder="Enter password"
+                    />
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button class="btn green" onclick="loginUser()">Login</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Login Status</div>
+              <div id="loginStatus">
+                <p>Enter username and password to login.</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- REGISTRATION FORM -->
+          <div id="registerForm" class="grid grid-3" style="display:none;">
+            <div class="card span-2">
+              <div class="card-title">👤 Registration Form</div>
+
+              <div class="field-grid">
+                <div>
+                  <label>First Name</label>
+                     <input id="regFirstName" />
+                </div>
+
+                <div>
+                  <label>Last Name</label>
+                  <input id="regLastName"/>
+                </div>
+
+                <div>
+                  <label>Email / User ID</label>
+                  <input id="regEmail" />
+                </div>
+
+                <div>
+                  <label>MetaMask Wallet ID</label>
+                  <input id="regWallet" />
+                </div>
+
+                <div>
+                  <label>Password</label>
+                  <input id="regPassword" type="password" />
+                </div>
+
+                <div>
+                  <label>Confirm Password</label>
+                  <input id="regConfirmPassword" type="password" />
+                </div>
+
+                <div>
+                  <label>User Type</label>
+                  <select id="regRole">
+                    <option>Producer / Buyer</option>
+                    <option>Producer</option>
+                    <option>Buyer</option>
+                    <option>Auditor</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label>Location</label>
+                  <input id="regLocation" value="Noida, India" />
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button id="verifyMetaMaskBtn" class="btn blue" onclick="verifyMetaMask()">Verify MetaMask</button>
+                <button id="registerUserBtn" class="btn green" onclick="registerUser()" disabled>Register User</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">✅ Registration Status</div>
+              <div id="registrationStatus">
+                <p>MetaMask: Not verified</p>
+                <p>User: Not registered</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- HOME -->
+        <div id="home" class="screen">
+          <div class="page-title">
+            <h2>2. Home Dashboard</h2>
+            <p>Logged-in user wallet information, summary and all owned credits.</p>
+          </div>
+
+          <div class="hero">
+            <div>
+              <p>Logged in user</p>
+              <h2 id="homeName">Not registered</h2>
+              <p id="homeMeta">User ID: - · Role: - · Location: -</p>
+            </div>
+
+            <div class="hero-wallet">
+              <small>Wallet Address</small>
+              <p id="homeWallet">Not connected</p>
+              <p id="homeStatus" style="color:#86efac;font-size:12px;">Status: Pending</p>
+            </div>
+          </div>
+
+          <div class="grid grid-4">
+            <div class="stat-card">
+              <div>
+                <p>Total Credits</p>
+                <h3 id="userTotalCredits">0</h3>
+              </div>
+              <div class="stat-icon">⚡</div>
+            </div>
+
+            <div class="stat-card">
+              <div>
+                <p>Credits Listed</p>
+                <h3 id="userListedCredits">0</h3>
+              </div>
+              <div class="stat-icon">📌</div>
+            </div>
+
+            <div class="stat-card">
+              <div>
+                <p>Credits Bought</p>
+                <h3 id="userBoughtCredits">0</h3>
+              </div>
+              <div class="stat-icon">✅</div>
+            </div>
+
+            <div class="stat-card">
+              <div>
+                <p>Credits Sold</p>
+                <h3 id="userSoldCredits">0</h3>
+              </div>
+              <div class="stat-icon">🛒</div>
+            </div>
+          </div>
+
+          <div class="grid grid-3" style="margin-top:24px;">
+            <div class="card">
+              <div class="card-title">➕ Create New Credits</div>
+              <p>Submit meter reading and source details.</p>
+              <button class="btn green" style="margin-top:16px;" onclick="showScreen('credits')">Create Credits</button>
+            </div>
+
+            <div class="card">
+              <div class="card-title">📦 Available Credit to Supply</div>
+              <p>List your available credits in the marketplace.</p>
+              <button class="btn orange" style="margin-top:16px;" onclick="showScreen('credits')">Mark for Sell</button>
+            </div>
+
+            <div class="card">
+              <div class="card-title">📜 Auditing</div>
+              <p>View full credit lifecycle audit trail.</p>
+              <button class="btn outline" style="margin-top:16px;" onclick="showScreen('credits')">Open Audit</button>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:24px;">
+            <div class="card-title">⚡ My Credits</div>
+            <p style="color:#64748b;margin-bottom:18px;">
+              All credits owned by the logged-in user, including available, listed, revoked, bought and sold credits.
+            </p>
+
+            <div id="homeCreditsGrid" class="grid grid-4"></div>
+          </div>
+        </div>
+
+        <!-- CREDIT ACTIONS -->
+        <div id="credits" class="screen">
+          <div class="page-title">
+            <h2>3. Credit Actions</h2>
+            <p>Create credits, mark available credits for sell, revoke listings and audit credit history.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="card span-2">
+              <div class="card-title">➕ Create New Electricity Credits</div>
+
+              <div class="field-grid">
+                <div>
+                  <label>Meter ID</label>
+                  <input id="meterId" value="MTR-1001" />
+                </div>
+
+                <div>
+                  <label>Generation Source</label>
+                  <select id="source">
+                    <option>Solar</option>
+                    <option>Wind</option>
+                    <option>Hydro</option>
+                    <option>Coal</option>
+                    <option>Gas</option>
+                    <option>Thermal</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label>Energy Generated</label>
+                  <input id="energyKwh" type="number" value="100" />
+                </div>
+
+                <div>
+                  <label>Generation Period</label>
+                  <input id="period" value="08:00 AM - 06:00 PM" />
+                </div>
+
+                <div>
+                  <label>Location</label>
+                  <input id="creditLocation" value="Noida, India" />
+                </div>
+
+                <div>
+                  <label>Document Proof</label>
+                  <input id="docProof" value="solar_meter_report.pdf" />
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <button id="verifyCreateBtn" class="btn green" onclick="createCredit()">Verify & Create Credits</button>
+                <button id="prepareMintBtn" class="btn outline" onclick="mockMint()" style="display:none;">
+                  Prepare MetaMask Mint Tx
+                </button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">📦 Available Credit to Supply</div>
+              <p style="color:#64748b;line-height:1.6;">
+                Credits owned by the user that can be marked for sell or revoked from marketplace.
+              </p>
+
+              <div id="supplyCreditList" class="supply-list"></div>
+            </div>
+          </div>
+
+          <div class="card" style="margin-top:24px;">
+            <div class="card-title">📜 Credit Audit Trail</div>
+
+            <div class="audit-search-box">
+              <input id="auditSearchInput" placeholder="Search audit history by Credit ID e.g. EC-101" />
+              <button class="btn outline" onclick="searchAuditByCreditId()">Search Audit</button>
+            </div>
+
+            <div id="auditSearchResult" class="audit-result"></div>
+
+            <div id="auditGrid" class="grid grid-4"></div>
+          </div>
+        </div>
+
+        <!-- MARKETPLACE -->
+        <div id="marketplace" class="screen">
+          <div class="page-title">
+            <h2>4. Marketplace</h2>
+            <p>Credits listed for sale with current rate and audit option.</p>
+          </div>
+
+          <div class="grid grid-4">
+            <div class="stat-card">
+              <div>
+                <p>Credits in Market</p>
+                <h3 id="marketTotal">0</h3>
+              </div>
+              <div class="stat-icon">📊</div>
+            </div>
+
+            <div class="stat-card">
+              <div>
+                <p>Credits Bought</p>
+                <h3 id="marketBought">0</h3>
+              </div>
+              <div class="stat-icon">✅</div>
+            </div>
+
+            <div class="stat-card">
+              <div>
+                <p>Credits Sold</p>
+                <h3 id="marketSold">0</h3>
+              </div>
+              <div class="stat-icon">🛒</div>
+            </div>
+
+            <div class="stat-card">
+              <div>
+                <p>Listed Credits</p>
+                <h3 id="marketListed">0</h3>
+              </div>
+              <div class="stat-icon">📌</div>
+            </div>
+          </div>
+
+          <div class="toolbar" style="margin-top:24px;">
+            <input id="searchInput" placeholder="Search by credit ID, source, location..." oninput="renderMarketplace()" />
+
+            <div class="filters">
+              <button class="active" onclick="setFilter('All', this)">All</button>
+              <button onclick="setFilter('Renewable', this)">Renewable</button>
+              <button onclick="setFilter('Fossil', this)">Fossil</button>
+            </div>
+          </div>
+
+          <div id="marketGrid" class="grid grid-4"></div>
+        </div>
+
+        <!-- AI -->
+        <div id="ai" class="screen">
+          <div class="page-title">
+            <h2>5. AI/RAG Question Answering</h2>
+            <p>Ask questions about credits, marketplace, source classification and audit trails.</p>
+          </div>
+
+          <div class="grid grid-3">
+            <div class="card span-2">
+              <div class="card-title">🤖 Question Answering Screen</div>
+
+              <div id="chatBox" class="chat-box">
+                <div class="message ai">
+                  Ask me about credit validity, source classification, marketplace listing, revoke status or audit history.
+                </div>
+              </div>
+
+              <div class="btn-row">
+                <input id="aiQuestion" placeholder="Ask: Is EC-101 listed in the marketplace?" />
+                <button class="btn blue" onclick="askAI()">Ask AI</button>
+              </div>
+            </div>
+
+            <div class="card">
+              <div class="card-title">Quick Questions</div>
+              <div class="btn-row">
+                <button class="btn outline" onclick="quickAsk('How many credits are listed in marketplace?')">Marketplace credits?</button>
+                <button class="btn outline" onclick="quickAsk('Which credits are renewable?')">Renewable credits?</button>
+                <button class="btn outline" onclick="quickAsk('Explain latest audit trail')">Audit trail?</button>
+                <button class="btn outline" onclick="quickAsk('Can gas credits be marked as green?')">Gas as green?</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+    </main>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script>
+    let appState = {
+      registered: false,
+      walletConnected: false,
+      currentFilter: "All",
+      user: {
+        firstName: "",
+        lastName: "",
+        email: "",
+        wallet: "",
+        role: "",
+        location: ""
+      },
+      userStats: {
+        total: 350,
+        listed: 100,
+        bought: 0,
+        sold: 0
+      },
+      marketStats: {
+        bought: 0,
+        sold: 0
+      },
+      credits: [
+        {
+          id: "EC-101",
+          source: "Solar",
+          category: "Renewable",
+          qty: 100,
+          available: 100,
+          rate: "0.00045 ETH/kWh",
+          total: "0.045 ETH",
+          location: "Noida, India",
+          status: "Listed",
+          badge: "green-badge",
+          owned: true
+        },
+        {
+          id: "EC-118",
+          source: "Wind",
+          category: "Renewable",
+          qty: 250,
+          available: 250,
+          rate: "0.00044 ETH/kWh",
+          total: "0.110 ETH",
+          location: "Gujarat, India",
+          status: "Available",
+          badge: "blue-badge",
+          owned: true
+        },
+        {
+          id: "EC-203",
+          source: "Gas",
+          category: "Fossil",
+          qty: 80,
+          available: 80,
+          rate: "0.00022 ETH/kWh",
+          total: "0.018 ETH",
+          location: "Singapore",
+          status: "Listed",
+          badge: "orange-badge",
+          owned: false
+        }
+      ],
+      audit: [
+        "System initialized",
+        "Marketplace loaded with sample credits",
+        "EC-101 created: 100 kWh from Solar",
+        "EC-101 marked for sell",
+        "EC-118 created: 250 kWh from Wind",
+        "EC-203 created: 80 kWh from Gas",
+        "EC-203 marked for sell"
+      ]
+    };
+
+    function showToast(message) {
+      const toast = document.getElementById("toast");
+      toast.innerText = message;
+      toast.style.display = "block";
+      setTimeout(() => {
+        toast.style.display = "none";
+      }, 2500);
+    }
+
+    function showAuthForm(type) {
+      const loginForm = document.getElementById("loginForm");
+      const registerForm = document.getElementById("registerForm");
+      const loginTabBtn = document.getElementById("loginTabBtn");
+      const registerTabBtn = document.getElementById("registerTabBtn");
+
+      if (type === "login") {
+        loginForm.style.display = "grid";
+        registerForm.style.display = "none";
+        loginTabBtn.className = "btn";
+        registerTabBtn.className = "btn outline";
+      } else {
+        loginForm.style.display = "none";
+        registerForm.style.display = "grid";
+        loginTabBtn.className = "btn outline";
+        registerTabBtn.className = "btn";
+      }
+    }
+
+    function verifyMetaMask() {
+      const wallet = document.getElementById("regWallet").value;
+
+      if (!wallet || !wallet.startsWith("0x")) {
+        showToast("Please enter a valid MetaMask wallet address");
+        return;
+      }
+
+      appState.walletConnected = true;
+      appState.user.wallet = wallet;
+
+      document.getElementById("sidebarWallet").innerText = wallet;
+      document.getElementById("topWallet").innerText = wallet;
+      document.getElementById("sidebarStatus").innerText = "MetaMask Verified";
+
+      document.getElementById("registrationStatus").innerHTML = `
+        <p>✅ MetaMask: Verified</p>
+        <p>⏳ User: Not registered</p>
+        <p style="margin-top:8px;color:#047857;font-weight:700;">
+          Register User button is now enabled.
+        </p>
+      `;
+
+      document.getElementById("registerUserBtn").disabled = false;
+
+      appState.audit.push(`MetaMask verified for wallet ${shortWallet(wallet)}`);
+
+      renderAll();
+      showToast("MetaMask verified successfully");
+    }
+
+    function registerUser() {
+      if (!appState.walletConnected) {
+        showToast("Please verify MetaMask before registering");
+        return;
+      }
+
+      const password = document.getElementById("regPassword").value;
+      const confirmPassword = document.getElementById("regConfirmPassword").value;
+
+      if (password !== confirmPassword) {
+        showToast("Password and Confirm Password do not match");
+        return;
+      }
+
+      appState.user.firstName = document.getElementById("regFirstName").value;
+      appState.user.lastName = document.getElementById("regLastName").value;
+      appState.user.email = document.getElementById("regEmail").value;
+      appState.user.wallet = document.getElementById("regWallet").value;
+      appState.user.role = document.getElementById("regRole").value;
+      appState.user.location = document.getElementById("regLocation").value;
+
+      appState.registered = true;
+      appState.walletConnected = true;
+
+      appState.audit.push(
+        `User ${appState.user.email} registered with wallet ${shortWallet(appState.user.wallet)}`
+      );
+
+      document.getElementById("sidebarWallet").innerText = appState.user.wallet;
+      document.getElementById("topWallet").innerText = appState.user.wallet;
+      document.getElementById("sidebarStatus").innerText = "Verified";
+
+      document.getElementById("registrationStatus").innerHTML = `
+        <p>✅ MetaMask: Verified</p>
+        <p>✅ User: Registered</p>
+        <p>✅ Status: Verified</p>
+      `;
+
+      renderAll();
+      showToast("User registered successfully");
+      showScreen("home");
+    }
+
+    function loginUser() {
+      // const email = document.getElementById("email").value;
+      // const password = document.getElementById("loginPassword").value;
+
+      // if (!email || !password) {
+      //   showToast("Please enter email and password");
+      //   return;
+      // }
+
+      // appState.registered = true;
+      // appState.walletConnected = true;
+
+      // appState.user.firstName = "Rashi";
+      // appState.user.lastName = "Aggarwal";
+      // appState.user.email = email;
+      // appState.user.wallet = "0x8aF2c9dA91F0e4b78C91F";
+      // appState.user.role = "Producer / Buyer";
+      // appState.user.location = "Noida, India";
+
+      // document.getElementById("sidebarWallet").innerText = appState.user.wallet;
+      // document.getElementById("topWallet").innerText = appState.user.wallet;
+      // document.getElementById("sidebarStatus").innerText = "Logged In";
+
+      // document.getElementById("loginStatus").innerHTML = `
+      //   <p>✅ Login successful</p>
+      //   <p>User: ${email}</p>
+      // `;
+
+      // appState.audit.push(`User ${email} logged in`);
+
+      renderAll();
+      showToast("Login successful");
+      showScreen("home");
+    }
+
+      // Submit forms when Enter is pressed inside login or registration inputs
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter') {
+          const loginVisible = document.getElementById('loginForm') && document.getElementById('loginForm').style.display !== 'none';
+          const registerVisible = document.getElementById('registerForm') && document.getElementById('registerForm').style.display !== 'none';
+
+          if (loginVisible) {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('loginPassword').value;
+            if (email && password) {
+              loginUser();
+            }
+          }
+
+          if (registerVisible) {
+            const first = document.getElementById('regFirstName').value;
+            const last = document.getElementById('regLastName').value;
+            const email = document.getElementById('regEmail').value;
+            const wallet = document.getElementById('regWallet').value;
+            const pass = document.getElementById('regPassword').value;
+            const pass2 = document.getElementById('regConfirmPassword').value;
+
+            // Only attempt register when basic fields are filled and MetaMask verified
+            if (first && last && email && wallet && pass && pass2 && document.getElementById('registerUserBtn') && !document.getElementById('registerUserBtn').disabled) {
+              registerUser();
+            }
+          }
+        }
+      });
+
+    function showScreen(screenId) {
+      document.querySelectorAll(".screen").forEach(screen => {
+        screen.classList.remove("active");
+      });
+
+      document.getElementById(screenId).classList.add("active");
+
+      document.querySelectorAll(".nav button").forEach(btn => {
+        btn.classList.remove("active");
+      });
+
+      const navMap = {
+        registration: 0,
+        home: 1,
+        credits: 2,
+        marketplace: 3,
+        ai: 4
+      };
+
+      document.querySelectorAll(".nav button")[navMap[screenId]].classList.add("active");
+
+      renderAll();
+    }
+
+    function createCredit() {
+      const kwh = Number(document.getElementById("energyKwh").value);
+      const source = document.getElementById("source").value;
+      const location = document.getElementById("creditLocation").value;
+
+      if (!appState.registered) {
+        showToast("Please login/register user first");
+        return;
+      }
+
+      if (!kwh || kwh <= 0) {
+        showToast("Energy generated should be greater than 0");
+        return;
+      }
+
+      const category = ["Solar", "Wind", "Hydro"].includes(source) ? "Renewable" : "Fossil";
+      const id = "EC-" + Math.floor(300 + Math.random() * 600);
+      const rateNumber = category === "Renewable" ? 0.00045 : 0.00022;
+
+      const newCredit = {
+        id,
+        source,
+        category,
+        qty: kwh,
+        available: kwh,
+        rate: `${rateNumber} ETH/kWh`,
+        total: `${(kwh * rateNumber).toFixed(3)} ETH`,
+        location,
+        status: "Available",
+        badge: category === "Renewable" ? "green-badge" : "orange-badge",
+        owned: true
+      };
+
+      appState.credits.unshift(newCredit);
+      appState.userStats.total += kwh;
+      appState.audit.push(`${id} created: ${kwh} kWh from ${source}`);
+
+      document.getElementById("verifyCreateBtn").style.display = "none";
+      document.getElementById("prepareMintBtn").style.display = "inline-block";
+
+      renderAll();
+      showToast(`${kwh} electricity credits created. Prepare MetaMask transaction now.`);
+    }
+
+    function mockMint() {
+      showToast("MetaMask mint transaction prepared");
+      appState.audit.push("MetaMask mint transaction prepared");
+
+      document.getElementById("verifyCreateBtn").style.display = "inline-block";
+      document.getElementById("prepareMintBtn").style.display = "none";
+
+      renderAll();
+    }
+
+    function markForSell(id) {
+      const credit = appState.credits.find(c => c.id === id);
+
+      if (!credit || !credit.owned) {
+        showToast("Credit not found or not owned by user");
+        return;
+      }
+
+      if (credit.status === "Listed") {
+        showToast(`${id} is already listed`);
+        return;
+      }
+
+      if (credit.status === "Sold") {
+        showToast(`${id} is already sold`);
+        return;
+      }
+
+      credit.status = "Listed";
+      appState.audit.push(`${id} marked for sell`);
+      renderAll();
+      showToast(`${id} listed in marketplace`);
+    }
+
+    function revokeListing(id) {
+      const credit = appState.credits.find(c => c.id === id);
+
+      if (!credit || !credit.owned) {
+        showToast("Credit not found or not owned by user");
+        return;
+      }
+
+      if (credit.status !== "Listed") {
+        showToast(`${id} is not listed in marketplace`);
+        return;
+      }
+
+      credit.status = "Revoked";
+      appState.audit.push(`${id} revoked from marketplace`);
+      renderAll();
+      showToast(`${id} revoked from marketplace`);
+    }
+
+    function buyCredit(id) {
+      const credit = appState.credits.find(c => c.id === id);
+
+      if (!credit || credit.status !== "Listed") {
+        showToast("Credit is not available for purchase");
+        return;
+      }
+
+      credit.status = "Sold";
+      credit.owned = true;
+
+      appState.userStats.bought += credit.qty;
+      appState.marketStats.bought += credit.qty;
+      appState.marketStats.sold += credit.qty;
+
+      appState.audit.push(`${credit.id} bought from marketplace: ${credit.qty} kWh`);
+
+      renderAll();
+      showToast(`${credit.id} bought successfully`);
+    }
+
+    function renderHomeCredits() {
+      const grid = document.getElementById("homeCreditsGrid");
+      if (!grid) return;
+
+      const ownedCredits = appState.credits.filter(c => c.owned === true);
+
+      if (ownedCredits.length === 0) {
+        grid.innerHTML = `
+          <div class="result-neutral">
+            No credits available for this user.
+          </div>
+        `;
+        return;
+      }
+
+      grid.innerHTML = ownedCredits.map(c => `
+        <div class="credit-card">
+          <div class="credit-top">
+            <div>
+              <small>Credit ID</small>
+              <h3>${c.id}</h3>
+            </div>
+            <span class="badge ${getBadgeByStatus(c)}">${c.status}</span>
+          </div>
+
+          <div class="row"><span>Source</span><span>${c.source}</span></div>
+          <div class="row"><span>Category</span><span>${c.category}</span></div>
+          <div class="row"><span>Total Qty</span><span>${c.qty} kWh</span></div>
+          <div class="row"><span>Rate</span><span>${c.rate}</span></div>
+          <div class="row"><span>Location</span><span>${c.location}</span></div>
+
+          <div class="btn-row">
+            <button class="btn outline" onclick="auditCredit('${c.id}')">Audit</button>
+            ${
+              c.status === "Available" || c.status === "Revoked"
+                ? `<button class="btn orange" onclick="markForSell('${c.id}')">Mark for Sell</button>`
+                : ""
+            }
+            ${
+              c.status === "Listed"
+                ? `<button class="btn red" onclick="revokeListing('${c.id}')">Revoke</button>`
+                : ""
+            }
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function renderSupplyCreditList() {
+      const container = document.getElementById("supplyCreditList");
+      if (!container) return;
+
+      const ownedCredits = appState.credits.filter(c =>
+        c.owned === true &&
+        c.status !== "Sold"
+      );
+
+      if (ownedCredits.length === 0) {
+        container.innerHTML = `
+          <div class="result-neutral">
+            No credits available to supply.
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = ownedCredits.map(c => `
+        <div class="supply-item">
+          <div>
+            <strong>${c.id}</strong><br/>
+            ${c.qty} kWh · ${c.source} · ${c.category} · ${c.status}
+          </div>
+          <div>
+            ${
+              c.status === "Available" || c.status === "Revoked"
+                ? `<button class="btn orange" onclick="markForSell('${c.id}')">Mark for Sell</button>`
+                : ""
+            }
+            ${
+              c.status === "Listed"
+                ? `<button class="btn red" onclick="revokeListing('${c.id}')">Revoke</button>`
+                : ""
+            }
+          </div>
+        </div>
+      `).join("");
+    }
+
+    function setFilter(filter, btn) {
+      appState.currentFilter = filter;
+
+      document.querySelectorAll(".filters button").forEach(button => {
+        button.classList.remove("active");
+      });
+
+      btn.classList.add("active");
+      renderMarketplace();
+    }
+
+    function renderMarketplace() {
+      const grid = document.getElementById("marketGrid");
+      if (!grid) return;
+
+      const searchInput = document.getElementById("searchInput");
+      const search = searchInput ? searchInput.value.toLowerCase() : "";
+
+      let credits = appState.credits.filter(c => c.status === "Listed");
+
+      if (appState.currentFilter !== "All") {
+        credits = credits.filter(c => c.category === appState.currentFilter);
+      }
+
+      if (search) {
+        credits = credits.filter(c =>
+          c.id.toLowerCase().includes(search) ||
+          c.source.toLowerCase().includes(search) ||
+          c.location.toLowerCase().includes(search) ||
+          c.category.toLowerCase().includes(search) ||
+          c.status.toLowerCase().includes(search)
+        );
+      }
+
+      if (credits.length === 0) {
+        grid.innerHTML = `
+          <div class="card span-2">
+            <p style="color:#64748b;">No listed credits found for selected filter/search.</p>
+          </div>
+        `;
+      } else {
+        grid.innerHTML = credits.map(c => `
+          <div class="credit-card">
+            <div class="credit-top">
+              <div>
+                <small>Credit ID</small>
+                <h3>${c.id}</h3>
+              </div>
+              <span class="badge ${c.badge}">${c.source}</span>
+            </div>
+
+            <div class="row"><span>Total Qty</span><span>${c.qty} kWh</span></div>
+            <div class="row"><span>Category</span><span>${c.category}</span></div>
+            <div class="row"><span>Rate</span><span>${c.rate}</span></div>
+            <div class="row"><span>Current Total</span><span>${c.total}</span></div>
+            <div class="row"><span>Status</span><span>${c.status}</span></div>
+
+            <div class="btn-row">
+              <button class="btn" onclick="buyCredit('${c.id}')">Buy</button>
+              <button class="btn outline" onclick="auditCredit('${c.id}')">Audit</button>
+            </div>
+          </div>
+        `).join("");
+      }
+
+      const listedQty = appState.credits
+        .filter(c => c.status === "Listed")
+        .reduce((sum, c) => sum + c.qty, 0);
+
+      document.getElementById("marketTotal").innerText = listedQty;
+      document.getElementById("marketBought").innerText = appState.marketStats.bought;
+      document.getElementById("marketSold").innerText = appState.marketStats.sold;
+      document.getElementById("marketListed").innerText = listedQty;
+    }
+
+    function auditCredit(id) {
+      appState.audit.push(`Audit opened for ${id}`);
+
+      const auditInput = document.getElementById("auditSearchInput");
+      if (auditInput) auditInput.value = id;
+
+      renderAudit();
+      showScreen("credits");
+      searchAuditByCreditId();
+      showToast(`Audit opened for ${id}`);
+    }
+
+    function renderAudit() {
+      const auditGrid = document.getElementById("auditGrid");
+      if (!auditGrid) return;
+
+      auditGrid.innerHTML = appState.audit.map((event, index) => `
+        <div class="audit-item">
+          <div class="audit-number">${index + 1}</div>
+          <h4>${event}</h4>
+          <p>${new Date().toLocaleTimeString()}</p>
+        </div>
+      `).join("");
+    }
+
+    function searchAuditByCreditId() {
+      const inputEl = document.getElementById("auditSearchInput");
+      const resultBox = document.getElementById("auditSearchResult");
+
+      if (!inputEl || !resultBox) return;
+
+      const input = inputEl.value.trim().toLowerCase();
+
+      if (!input) {
+        resultBox.innerHTML = `
+          <div class="result-error">
+            Please enter a Credit ID to search.
+          </div>
+        `;
+        return;
+      }
+
+      const results = appState.audit.filter(event =>
+        event.toLowerCase().includes(input)
+      );
+
+      if (results.length === 0) {
+        resultBox.innerHTML = `
+          <div class="result-neutral">
+            No audit history found for ${input.toUpperCase()}.
+          </div>
+        `;
+        return;
+      }
+
+      resultBox.innerHTML = `
+        <div class="result-success">
+          <strong>Audit history found for ${input.toUpperCase()}</strong>
+          <ul style="margin-top:10px;padding-left:18px;">
+            ${results.map(r => `<li>${r}</li>`).join("")}
+          </ul>
+        </div>
+      `;
+    }
+
+    function renderHome() {
+      const fullName = `${appState.user.firstName || ""} ${appState.user.lastName || ""}`.trim();
+
+      document.getElementById("homeName").innerText = fullName || "Not registered";
+      document.getElementById("homeMeta").innerText =
+        `User ID: ${appState.user.email || "-"} · Role: ${appState.user.role || "-"} · Location: ${appState.user.location || "-"}`;
+      document.getElementById("homeWallet").innerText = appState.user.wallet || "Not connected";
+      document.getElementById("homeStatus").innerText = appState.registered ? "Status: Verified" : "Status: Pending";
+
+      const ownedCredits = appState.credits.filter(c => c.owned === true);
+      const totalOwned = ownedCredits.reduce((sum, c) => sum + c.qty, 0);
+      const listedOwned = ownedCredits.filter(c => c.status === "Listed").reduce((sum, c) => sum + c.qty, 0);
+      const soldOwned = ownedCredits.filter(c => c.status === "Sold").reduce((sum, c) => sum + c.qty, 0);
+
+      document.getElementById("userTotalCredits").innerText = totalOwned;
+      document.getElementById("userListedCredits").innerText = listedOwned;
+      document.getElementById("userBoughtCredits").innerText = appState.userStats.bought;
+      document.getElementById("userSoldCredits").innerText = soldOwned;
+    }
+
+    function askAI() {
+      const input = document.getElementById("aiQuestion");
+      const question = input.value.trim();
+
+      if (!question) {
+        showToast("Please enter a question");
+        return;
+      }
+
+      addChatMessage(question, "user");
+
+      let answer = "";
+      const lower = question.toLowerCase();
+
+      if (lower.includes("renewable")) {
+        const renewable = appState.credits.filter(c => c.category === "Renewable");
+        answer = `There are ${renewable.length} renewable credit lots in the registry. Renewable sources include Solar, Wind and Hydro.`;
+      } else if (lower.includes("market") || lower.includes("listed")) {
+        const listed = appState.credits.filter(c => c.status === "Listed");
+        answer = `There are ${listed.length} credit lots currently listed in the marketplace.`;
+      } else if (lower.includes("gas")) {
+        answer = "Gas-based credits should not be marked as green. They can be used for traceability and electricity accounting, but not as renewable electricity credits.";
+      } else if (lower.includes("audit")) {
+        answer = `Latest audit event: ${appState.audit[appState.audit.length - 1]}`;
+      } else if (lower.includes("revoke")) {
+        answer = "A listed credit can be revoked by the owner. Once revoked, it is removed from the marketplace but remains owned by the user.";
+      } else {
+        answer = "Based on available MVP registry data, credits can be created, marked for sell, bought from marketplace, revoked from marketplace, and audited using credit ID.";
+      }
+
+      addChatMessage(answer, "ai");
+      input.value = "";
+    }
+
+    function quickAsk(question) {
+      document.getElementById("aiQuestion").value = question;
+      askAI();
+    }
+
+    function addChatMessage(text, type) {
+      const chatBox = document.getElementById("chatBox");
+
+      const div = document.createElement("div");
+      div.className = `message ${type}`;
+      div.innerText = text;
+
+      chatBox.appendChild(div);
+      chatBox.scrollTop = chatBox.scrollHeight;
+    }
+
+    function getBadgeByStatus(credit) {
+      if (credit.status === "Listed") return "purple-badge";
+      if (credit.status === "Available") return credit.badge;
+      if (credit.status === "Revoked") return "gray-badge";
+      if (credit.status === "Sold") return "green-badge";
+      return credit.badge;
+    }
+
+    function shortWallet(wallet) {
+      if (!wallet) return "Not connected";
+      return wallet.slice(0, 8) + "..." + wallet.slice(-4);
+    }
+
+    function renderAll() {
+      renderHome();
+      renderHomeCredits();
+      renderSupplyCreditList();
+      renderMarketplace();
+      renderAudit();
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>
