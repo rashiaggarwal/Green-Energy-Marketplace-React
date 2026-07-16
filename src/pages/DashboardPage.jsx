@@ -180,7 +180,7 @@ export default function DashboardPage() {
   return (
     <>
       <div className="page-title">
-        <h2>Home Dashboard</h2>
+        <h2>Dashboard</h2>
 
         <p>
           Logged-in user wallet information,

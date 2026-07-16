@@ -1,4 +1,5 @@
 import { NavLink, useNavigate } from "react-router-dom";
+import { apiClient } from "../services/apiClient";
 
 export default function Sidebar() {
   const navigate = useNavigate();
@@ -6,9 +7,29 @@ export default function Sidebar() {
   const user = JSON.parse(localStorage.getItem("user") || "{}");
   const role = user?.role || "SELLER";
 
-  const logout = () => {
-    localStorage.clear();
-    navigate("/");
+  const logout = async () => {
+    try {
+
+      await apiClient.logoutUser();
+
+    } catch (error) {
+
+      console.error(
+        "Logout failed:",
+        error
+      );
+
+    } finally {
+
+      localStorage.clear();
+
+      navigate(
+        "/",
+        {
+          replace: true,
+        }
+      );
+    }
   };
 
   return (
@@ -29,7 +50,7 @@ export default function Sidebar() {
             isActive ? "active" : ""
           }
         >
-          🏠 Home
+          🏠 Dashboard
         </NavLink>
 
         {role !== "ADMIN" && (

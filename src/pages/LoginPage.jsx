@@ -32,7 +32,9 @@ export default function LoginPage() {
       wallet_address: "",
     });
 
-  const login = async () => {
+  
+const login = async () => {
+  if (loading) return;
     try {
       setLoading(true);
 
@@ -52,8 +54,8 @@ export default function LoginPage() {
     }
   };
 
-  const register =
-    async () => {
+  const register = async () => {
+  if (loading) return;
       try {
         if (
           registerForm.password !==
@@ -151,11 +153,18 @@ export default function LoginPage() {
         {mode === "login" && (
           <div className="auth-grid">
 
-            <div className="card">
+              <form
+                className="card"
+                onSubmit={(e) => {
+                  e.preventDefault();
+                  login();
+                }}
+              >
 
-              <h2>
-                🔐 Login
-              </h2>
+                <h2>
+                  🔐 Login
+                </h2>
+
 
               <div className="form-group">
                 <label>
@@ -177,6 +186,7 @@ export default function LoginPage() {
                     )
                   }
                   placeholder="user@example.com"
+                  autoComplete="email"
                 />
               </div>
 
@@ -201,22 +211,21 @@ export default function LoginPage() {
                     )
                   }
                   placeholder="Password"
+                  autoComplete="current-password"
                 />
               </div>
 
               <button
+                type="submit"
                 className="btn green-btn"
-                onClick={login}
-                disabled={
-                  loading
-                }
+                disabled={loading}
               >
                 {loading
                   ? "Logging in..."
                   : "Login"}
               </button>
 
-            </div>
+            </form>
 
             <div className="card status-card">
               <h3>
@@ -235,7 +244,13 @@ export default function LoginPage() {
         {mode === "register" && (
           <div className="auth-grid">
 
-            <div className="card">
+            <form
+              className="card"
+              onSubmit={(e) => {
+                e.preventDefault();
+                register();
+              }}
+            >
 
               <h2>
                 👤 Registration
@@ -365,6 +380,7 @@ export default function LoginPage() {
                 <input
                   type="password"
                   placeholder="Password"
+                  autoComplete="new-password"
                   value={
                     registerForm.password
                   }
@@ -448,13 +464,9 @@ export default function LoginPage() {
               <div className="btn-row">
 
                 <button
+                  type="submit"
                   className="btn green-btn"
-                  onClick={
-                    register
-                  }
-                  disabled={
-                    loading
-                  }
+                  disabled={loading}
                 >
                   {loading
                     ? "Registering..."
@@ -463,7 +475,7 @@ export default function LoginPage() {
 
               </div>
 
-            </div>
+            </form>
 
             <div className="card status-card">
 

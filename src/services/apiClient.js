@@ -1,5 +1,25 @@
+import { loaderStore } from "../utils/loaderStore";
+
 const BASE_URL =
   "https://greengridenergyexchange.onrender.com";
+
+let activeRequests = 0;
+
+function showGlobalLoader() {
+  window.dispatchEvent(
+    new CustomEvent("global-loader", {
+      detail: true,
+    })
+  );
+}
+
+function hideGlobalLoader() {
+  window.dispatchEvent(
+    new CustomEvent("global-loader", {
+      detail: false,
+    })
+  );
+}
 
 function getToken() {
   return localStorage.getItem(
@@ -13,36 +33,50 @@ async function request(
 ) {
   const token = getToken();
 
-  const response = await fetch(
-    `${BASE_URL}${endpoint}`,
-    {
-      ...options,
+  console.log("LOADER SHOW");
+  loaderStore.show();
 
-      headers: {
-        "Content-Type":
-          "application/json",
+  try {
 
-        ...(token && {
-          Authorization:
-            `Bearer ${token}`,
-        }),
+    const response =
+      await fetch(
+        `${BASE_URL}${endpoint}`,
+        {
+          ...options,
 
-        ...options.headers,
-      },
+          headers: {
+            "Content-Type":
+              "application/json",
+
+            ...(token && {
+              Authorization:
+                `Bearer ${token}`,
+            }),
+
+            ...options.headers,
+          },
+        }
+      );
+
+    const data =
+      await response.json();
+
+    if (!response.ok) {
+      throw new Error(
+        data?.detail ||
+        data?.message ||
+        "API request failed"
+      );
     }
-  );
 
-  const data =
-    await response.json();
+    return data;
 
-  if (!response.ok) {
-    throw new Error(
-      data?.detail ||
-      "API request failed"
-    );
+  } finally {
+
+    console.log("LOADER HIDE");
+    loaderStore.hide();
+
   }
-
-  return data;
 }
 
 export const apiClient = {
@@ -189,21 +223,32 @@ export const apiClient = {
     });
   },
 
-  logout() {
+async logoutUser() {
+  try {
+    await request(
+      "/api/v1/users/logout",
+      {
+        method: "POST",
+      }
+    );
+  } finally {
     localStorage.removeItem(
       "access_token"
     );
+
     localStorage.removeItem(
       "refresh_token"
     );
+
     localStorage.removeItem(
       "user"
     );
-  },
+  }
+ },
 
   askAssistant(question) {
     return fetch(
-      "http://ec2-3-238-80-61.compute-1.amazonaws.com:8000/query",
+      "https://d2iofwozlvn5we.cloudfront.net/query",
       {
         method: "POST",
 

@@ -16,3 +16,79 @@ body {
   background: #f8fafc;
   color: #0f172a;
 }
+
+.global-loader {
+  position: fixed;
+  inset: 0;
+
+  background: rgba(
+    255,
+    255,
+    255,
+    0.75
+  );
+
+  backdrop-filter: blur(4px);
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  z-index: 999999;
+}
+
+.global-loader-content {
+  text-align: center;
+}
+
+.global-spinner {
+  width: 70px;
+  height: 70px;
+
+  border: 6px solid #e5e7eb;
+
+  border-top-color: #16a34a;
+
+  border-radius: 50%;
+
+  animation: spin 1s linear infinite;
+
+  margin: auto;
+}
+
+@keyframes spin {
+  from {
+    transform:
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
+
+.loader-spinner {
+  width: 64px;
+  height: 64px;
+
+  border: 6px solid #e5e7eb;
+
+  border-top: 6px solid #16a34a;
+
+  border-radius: 50%;
+
+  animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform:
+      rotate(0deg);
+  }
+
+  to {
+    transform:
+      rotate(360deg);
+  }
+}
