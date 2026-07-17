@@ -21,6 +21,8 @@ import GlobalLoader from "./components/GlobalLoader";
 import {
   loaderStore,
 } from "./utils/loaderStore";
+import AnalyticsDashboard from "./pages/AnalyticsDashboard";
+import MySalesPage from "./pages/MySalesPage";
 
 export default function App() {
 
@@ -118,9 +120,13 @@ console.log("APP RENDERED");
           />
 
           <Route
-            path="/audit"
+            path="/sales"
+            element={<MySalesPage />}
+          />
+          <Route
+            path="/analytics"
             element={
-              <AuditTrailPage />
+              <AnalyticsDashboard />
             }
           />
 

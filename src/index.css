@@ -92,3 +92,108 @@ body {
       rotate(360deg);
   }
 }
+
+.sales-status {
+  display: inline-block;
+
+  padding: 8px 12px;
+
+  border-radius: 20px;
+
+  margin-bottom: 12px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.sales-status.COMPLETED {
+  background: #dcfce7;
+  color: #166534;
+}
+
+.sales-status.PENDING {
+  background: #fef3c7;
+  color: #92400e;
+}
+
+.sales-status.CONSUMED {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.tx-section {
+  margin-top: 12px;
+
+  padding: 10px;
+
+  border-radius: 10px;
+
+  background: #f8fafc;
+}
+
+.hash {
+  word-break: break-all;
+
+  font-size: 11px;
+
+  color: #475569;
+}
+
+.consumed-badge {
+  margin-top: 12px;
+
+  padding: 8px;
+
+  border-radius: 10px;
+
+  background: #fee2e2;
+
+  color: #991b1b;
+
+  font-size: 12px;
+
+  font-weight: 700;
+}
+
+.sales-header {
+  margin-bottom: 16px;
+}
+
+.sales-metrics {
+  display: flex;
+
+  justify-content: space-between;
+
+  margin: 16px 0;
+
+  gap: 20px;
+}
+
+.sales-metric span {
+  color: #64748b;
+
+  font-size: 12px;
+}
+
+.sales-metric h2 {
+  margin-top: 4px;
+
+  color: #0f172a;
+}
+
+.sales-status {
+  margin-bottom: 12px;
+}
+
+.market-grid {
+  display: grid;
+
+  grid-template-columns:
+    repeat(
+      auto-fill,
+      minmax(320px, 1fr)
+    );
+
+  gap: 20px;
+}

@@ -75,15 +75,25 @@ export default function Sidebar() {
           </NavLink>
         )}
 
+        {role === "SELLER" && (
+          <NavLink
+            to="/sales"
+            className={({ isActive }) =>
+              isActive ? "active" : ""
+            }
+          >
+            💰 My Sales
+          </NavLink>
+        )}
         
-        {/* <NavLink
-          to="/audit"
+        <NavLink
+          to="/analytics"
           className={({ isActive }) =>
             isActive ? "active" : ""
           }
         >
-          📜 Audit Trail
-        </NavLink> */}
+          📜 Analytics
+        </NavLink>
 
       </nav>
 

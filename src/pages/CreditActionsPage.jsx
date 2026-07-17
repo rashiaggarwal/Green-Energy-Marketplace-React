@@ -18,7 +18,6 @@ export default function CreditActionsPage() {
     energy_kwh: "",
     price_per_kwh: "",
     energy_source: "SOLAR",
-    title: "",
     description: "",
     location: "",
     expires_at: "",
@@ -112,9 +111,14 @@ export default function CreditActionsPage() {
 
         await apiClient.updateListing(editingId, payload);
 
-        setMessage({ type: "success", text: "Listing updated successfully" });
-        // navigate back to credits page without query
-        navigate("/credits");
+        navigate("/dashboard", {
+          state: {
+            toast: {
+              type: "success",
+              text: "Listing updated successfully",
+            },
+          },
+        });
         return;
       }
 
@@ -131,15 +135,13 @@ export default function CreditActionsPage() {
 
       await apiClient.createListing(payload);
 
-      setMessage({ type: "success", text: "Listing created successfully" });
-      setForm({
-        energy_kwh: "",
-        price_per_kwh: "",
-        energy_source: "SOLAR",
-        title: "",
-        description: "",
-        location: "",
-        expires_at: "",
+      navigate("/dashboard", {
+        state: {
+          toast: {
+            type: "success",
+            text: "Listing created successfully",
+          },
+        },
       });
     } catch (err) {
       setMessage({ type: "error", text: err.message || String(err) });
@@ -157,16 +159,6 @@ export default function CreditActionsPage() {
 
       <form className="card" onSubmit={handleSubmit}>
         <div className="field-grid">
-          <div>
-            <label>Title</label>
-            <input
-              name="title"
-              value={form.title}
-              onChange={handleChange}
-              placeholder="Short title"
-              required
-            />
-          </div>
 
           <div>
             <label>Energy (kWh)</label>
@@ -212,6 +204,17 @@ export default function CreditActionsPage() {
             </select>
           </div>
 
+          <div>
+            <label>Location</label>
+            <input
+              name="location"
+              value={form.location}
+              onChange={handleChange}
+              placeholder="City, State"
+              required
+            />
+          </div>
+
           <div style={{ gridColumn: "1 / -1" }}>
             <label>Description</label>
             <textarea
@@ -222,17 +225,6 @@ export default function CreditActionsPage() {
               required
               rows={4}
               style={{ width: "100%", resize: "vertical" }}
-            />
-          </div>
-
-          <div>
-            <label>Location</label>
-            <input
-              name="location"
-              value={form.location}
-              onChange={handleChange}
-              placeholder="City, State"
-              required
             />
           </div>
 

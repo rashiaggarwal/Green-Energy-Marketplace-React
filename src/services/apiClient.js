@@ -118,14 +118,68 @@ export const apiClient = {
       response.refresh_token
     );
 
+    localStorage.setItem("user", JSON.stringify(response.user));
+
+try {
+
+  const walletAddress =
+    response.user?.wallet_address;
+
+  if (walletAddress) {
+
+    const balanceResponse =
+      await request(
+        `/api/v1/blockchain/balance/${walletAddress}`
+      );
+
+    const isVerified =
+      balanceResponse &&
+      balanceResponse.balance_kwh !== undefined &&
+      balanceResponse.balance_kwh !== null;
+
+    const updatedUser = {
+      ...response.user,
+      balance:
+        balanceResponse.balance_kwh || 0,
+      verificationStatus:
+        isVerified
+          ? "Verified"
+          : "UnVerified",
+    };
+
     localStorage.setItem(
       "user",
-      JSON.stringify(
-        response.user
-      )
+      JSON.stringify(updatedUser)
     );
 
-    return response;
+    localStorage.setItem(
+      "wallet_balance",
+      JSON.stringify(balanceResponse)
+    );
+
+  }
+
+} catch (error) {
+
+  console.error(
+    "Failed to fetch wallet balance",
+    error
+  );
+
+  const updatedUser = {
+    ...response.user,
+    balance: 0,
+    verificationStatus:
+      "UnVerified",
+  };
+
+  localStorage.setItem(
+    "user",
+    JSON.stringify(updatedUser)
+  );
+}
+
+return response;
   },
 
   getCurrentUser() {
@@ -269,4 +323,34 @@ async logoutUser() {
       res.json()
     );
   },
+
+  getWalletBalance(walletAddress) {
+  return request(
+    `/api/v1/blockchain/balance/${walletAddress}`
+  );
+},
+
+getPublicListings(params = "") {
+  return request(
+    `/api/v1/public/listings${params}`
+  );
+},
+
+getPublicActiveListings(params = "") {
+  return request(
+    `/api/v1/public/listings/active${params}`
+  );
+},
+
+getPublicPurchases(params = "") {
+  return request(
+    `/api/v1/public/purchases${params}`
+  );
+},
+
+getMySales(skip = 0, limit = 20) {
+  return request(
+    `/api/v1/purchases/my-sales?skip=${skip}&limit=${limit}`
+  );
+},
 };

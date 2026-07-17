@@ -234,6 +234,7 @@
   border: 2px solid rgba(15,23,42,0.06);
   box-shadow: 0 4px 10px rgba(2,6,23,0.04);
   z-index: 5;
+  margin-bottom: 12px;
 }
 
 .marketplace-badge.renewable {
@@ -471,4 +472,8 @@
   padding: 8px 10px;
   border-radius: 8px;
   border: 1px solid #d7dfec;
+}
+
+.title {
+  margin-bottom: 5px;
 }

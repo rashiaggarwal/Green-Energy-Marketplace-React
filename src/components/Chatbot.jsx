@@ -62,53 +62,84 @@ export default function Chatbot() {
     ]);
   };
 
-  const askQuestion = async () => {
-    if (!question.trim()) return;
+const askQuestion = async () => {
+  if (!question.trim()) return;
 
-    const currentQuestion = question;
+  const currentQuestion = question;
+
+  setMessages((prev) => [
+    ...prev,
+    {
+      role: "user",
+      text: currentQuestion,
+    },
+  ]);
+
+  setQuestion("");
+
+  try {
+    setLoading(true);
+
+    const response =
+      await apiClient.askAssistant(
+        currentQuestion
+      );
+
+    console.log(
+      "AI RESPONSE",
+      response
+    );
+
+    const uniqueSources =
+      Array.from(
+        new Set(
+          (
+            response?.sources || []
+          ).map((source) => {
+            if (
+              typeof source ===
+              "string"
+            ) {
+              return source;
+            }
+
+            return (
+              source.document_name ||
+              source.filename ||
+              source.name
+            );
+          })
+        )
+      ).filter(Boolean);
 
     setMessages((prev) => [
       ...prev,
       {
-        role: "user",
-        text: currentQuestion,
+        role: "assistant",
+        text:
+          response?.answer ||
+          response?.response ||
+          "No response received.",
+
+        sources:
+          uniqueSources,
       },
     ]);
+  } catch (error) {
+    console.error(error);
 
-    setQuestion("");
-
-    try {
-      setLoading(true);
-
-      const response =
-        await apiClient.askAssistant(
-          currentQuestion
-        );
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          text:
-            response.answer ||
-            "No response received.",
-        },
-      ]);
-    } catch (error) {
-      console.error(error);
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          role: "assistant",
-          text:
-            "Unable to connect to GreenGrid Assistant.",
-        },
-      ]);
-    } finally {
-      setLoading(false);
-    }
-  };
+    setMessages((prev) => [
+      ...prev,
+      {
+        role: "assistant",
+        text:
+          "Unable to connect to GreenGrid Assistant.",
+      },
+    ]);
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <>
@@ -134,22 +165,52 @@ export default function Chatbot() {
           </div>
 
           <div className="chat-messages">
+
             {messages.map((msg, index) => (
               <div
                 key={index}
                 className={`message ${msg.role}`}
               >
-                {isHtml(msg.text) ? (
-                  <div
-                    dangerouslySetInnerHTML={{
-                      __html: sanitizeHtml(msg.text),
-                    }}
-                  />
-                ) : (
-                  msg.text
-                )}
+                <>
+                  {isHtml(msg.text) ? (
+                    <div
+                      dangerouslySetInnerHTML={{
+                        __html:
+                          sanitizeHtml(
+                            msg.text
+                          ),
+                      }}
+                    />
+                  ) : (
+                    msg.text
+                  )}
+
+                  {msg.sources?.length >
+                    0 && (
+                    <div className="chat-sources">
+                      <div className="source-title">
+                        📚 Sources
+                      </div>
+
+                      {msg.sources.map(
+                        (
+                          source,
+                          idx
+                        ) => (
+                          <div
+                            key={idx}
+                            className="source-chip"
+                          >
+                            📄 {source}
+                          </div>
+                        )
+                      )}
+                    </div>
+                  )}
+                </>
               </div>
             ))}
+
 
             {loading && (
               <div className="message assistant">

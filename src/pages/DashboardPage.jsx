@@ -204,20 +204,44 @@ export default function DashboardPage() {
         </div>
 
         <div className="hero-wallet">
-          <small>Wallet Address</small>
+    <small>Wallet Address</small>
 
-          <p>{user.wallet_address || "0x8aF2c9dA91F0e4b78C91F"}</p>
+      <p>
+        {user.wallet_address ||
+          "Not Available"}
+      </p>
 
-          <p
-            style={{
-              color: "#86efac",
-              marginTop: "10px",
-              fontSize: "12px",
-            }}
-          >
-            Status: Verified
-          </p>
-        </div>
+        <p
+          style={{
+            color:
+              user.verificationStatus ===
+              "Verified"
+                ? "#86efac"
+                : "#fca5a5",
+
+            marginTop: "10px",
+            fontSize: "12px",
+            fontWeight: 600,
+          }}
+        >
+          Status:{" "}
+          {user.verificationStatus ||
+            "UnVerified"}
+        </p>
+
+  <p
+    style={{
+      marginTop: "8px",
+      fontSize: "13px",
+      color: "#e5e7eb",
+    }}
+  >
+    Balance:{" "}
+    <strong>
+      {user.balance ?? 0}
+    </strong>
+  </p>
+</div>
       </div>
 
       {/* STATS */}
@@ -279,8 +303,9 @@ export default function DashboardPage() {
                     <div className={`marketplace-badge ${getSourceClass(l.energy_source)}`}>
                         {(l.energy_source || "").replace(/_/g, " ")}
                     </div>
-
-                  <h3>{l.title || "Untitled"}</h3>
+                    <div class="title">
+                      <h3>{l.title || "Untitled"}</h3>
+                    </div>
 
                   <div className="marketplace-info">
                     <p>
