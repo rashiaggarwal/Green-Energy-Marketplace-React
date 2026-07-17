@@ -250,8 +250,45 @@
 .marketplace-verify {
   position: absolute;
   top: 12px;
-  right: 16px;
-  z-index: 6;
+  right: 12px;
+}
+
+.validate-btn {
+  border: none;
+
+  background: #2563eb;
+
+  color: white;
+
+  padding: 8px 14px;
+
+  border-radius: 20px;
+
+  cursor: pointer;
+
+  font-size: 12px;
+
+  font-weight: 600;
+}
+
+.validate-btn:hover {
+  background: #1d4ed8;
+}
+
+.verified-badge {
+  background: #dcfce7;
+
+  color: #166534;
+
+  padding: 8px 14px;
+
+  border-radius: 20px;
+
+  font-size: 12px;
+
+  font-weight: 700;
+
+  border: 1px solid #86efac;
 }
 
 @media (max-width: 600px) {
@@ -329,8 +366,6 @@
 
 .buy-btn {
   flex: 1;
-
-  height: 48px;
 
   background: #0b1035;
 
@@ -476,4 +511,67 @@
 
 .title {
   margin-bottom: 5px;
+}
+
+.marketplace-badge.solar {
+  background: #fef9c3;
+  color: #ca8a04;
+}
+
+.marketplace-badge.wind {
+  background: #ede9fe;
+  color: #6d28d9;
+}
+
+.marketplace-badge.hydro {
+  background: #dbeafe;
+  color: #1d4ed8;
+}
+
+.marketplace-badge.biomass {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.marketplace-badge.geothermal {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.marketplace-badge.tidal {
+  background: #cffafe;
+  color: #0891b2;
+}
+
+.marketplace-badge.other {
+  background: #e5e7eb;
+  color: #374151;
+}
+
+.marketplace-audit-card.solar {
+  border-left: 5px solid #eab308;
+}
+
+.marketplace-audit-card.wind {
+  border-left: 5px solid #8b5cf6;
+}
+
+.marketplace-audit-card.hydro {
+  border-left: 5px solid #2563eb;
+}
+
+.marketplace-audit-card.biomass {
+  border-left: 5px solid #16a34a;
+}
+
+.marketplace-audit-card.geothermal {
+  border-left: 5px solid #dc2626;
+}
+
+.marketplace-audit-card.tidal {
+  border-left: 5px solid #06b6d4;
+}
+
+.marketplace-audit-card.other {
+  border-left: 5px solid #6b7280;
 }

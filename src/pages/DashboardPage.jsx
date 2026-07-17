@@ -34,6 +34,8 @@ export default function DashboardPage() {
   const purchasesLoadingRef = useRef(purchasesLoading);
   const purchasesHasMoreRef = useRef(purchasesHasMore);
   const purchasesRef = useRef(0);
+  const [verifiedIds, setVerifiedIds] =
+  useState({});
 
   async function fetchListings(skip = 0) {
     if (loading) return;
@@ -117,12 +119,32 @@ export default function DashboardPage() {
     }
   }, [role]);
 
-  function getSourceClass(src) {
-    const s = (src || "").toLowerCase();
-    if (["solar", "wind", "hydro"].includes(s)) return "renewable";
-    if (["coal", "gas", "thermal"].includes(s)) return "fossil";
-    return "renewable";
+function getSourceClass(src) {
+  const s = (src || "").toLowerCase();
+
+  switch (s) {
+    case "solar":
+      return "solar";
+
+    case "wind":
+      return "wind";
+
+    case "hydro":
+      return "hydro";
+
+    case "biomass":
+      return "biomass";
+
+    case "geothermal":
+      return "geothermal";
+
+    case "tidal":
+      return "tidal";
+
+    default:
+      return "other";
   }
+}
 
   // attach scroll listener once; use refs to read latest state
   useEffect(() => {
@@ -176,6 +198,42 @@ export default function DashboardPage() {
       setConfirming(false);
     }
   };
+
+  const handleVerify =
+  async (listing) => {
+
+    try {
+
+      await apiClient.verifyListing(
+        listing.id
+      );
+
+      setVerifiedIds(
+        (prev) => ({
+          ...prev,
+          [listing.id]:
+            true,
+        })
+      );
+
+      setToast({
+        type: "success",
+        message:
+          "Credit validated successfully.",
+      });
+
+    } catch (error) {
+
+      setToast({
+        type: "error",
+        message:
+          error.message ||
+          "Validation failed.",
+      });
+
+    }
+
+};
 
   return (
     <>
@@ -303,6 +361,31 @@ export default function DashboardPage() {
                     <div className={`marketplace-badge ${getSourceClass(l.energy_source)}`}>
                         {(l.energy_source || "").replace(/_/g, " ")}
                     </div>
+                    <div
+                        className="marketplace-verify"
+                      >
+                        {(verifiedIds[l.id] ||
+                          l.blockchain_verified) ? (
+
+                          <div
+                            className="verified-badge"
+                          >
+                            ✅ Verified
+                          </div>
+
+                        ) : (
+
+                          <button
+                            className="validate-btn"
+                            onClick={() =>
+                              handleVerify(l)
+                            }
+                          >
+                            Validate
+                          </button>
+
+                        )}
+                      </div>
                     <div class="title">
                       <h3>{l.title || "Untitled"}</h3>
                     </div>

@@ -50,15 +50,26 @@ export default function MarketplacePage() {
 
   const loaderRef = useRef(null);
 
-  useEffect(() => {
-    setListings([]);
-    setPage(0);
-    setHasMore(true);
-  }, [energySource]);
+useEffect(() => {
 
-  useEffect(() => {
-    fetchListings();
-  }, [page]);
+  setListings([]);
+
+  setHasMore(true);
+
+  setPage(0);
+
+}, [energySource]);
+
+useEffect(() => {
+
+  setListings([]);
+  setHasMore(true);
+
+  setPage(0);
+
+  fetchListings(0);
+
+}, [energySource]);
 
   useEffect(() => {
     const observer =
@@ -95,15 +106,14 @@ export default function MarketplacePage() {
     loading,
   ]);
 
-  async function fetchListings() {
+  async function fetchListings(currentPage=page) {
     if (loading || !hasMore)
       return;
 
     setLoading(true);
 
     try {
-      const skip =
-        page * limit;
+      const skip = currentPage * limit;
 
       const data =
         await apiClient.getActiveListings(
@@ -142,34 +152,39 @@ export default function MarketplacePage() {
     setLoading(false);
   }
 
-  const handleVerify =
-    async (listing) => {
-      try {
-        await apiClient.verifyListing(
-          listing.id
-        );
+const handleVerify = async (
+  listing
+) => {
+  try {
 
-        setVerifiedIds(
-          (prev) => ({
-            ...prev,
-            [listing.id]:
-              true,
-          })
-        );
+    await apiClient.verifyListing(
+      listing.id
+    );
 
-        setToast({
-          type: "success",
-          message:
-            "Verified on blockchain.",
-        });
-      } catch {
-        setToast({
-          type: "error",
-          message:
-            "Verification failed.",
-        });
-      }
-    };
+    setVerifiedIds(
+      (prev) => ({
+        ...prev,
+        [listing.id]: true,
+      })
+    );
+
+    setToast({
+      type: "success",
+      message:
+        "Blockchain validation successful.",
+    });
+
+  } catch (error) {
+
+    setToast({
+      type: "error",
+      message:
+        error.message ||
+        "Blockchain validation failed.",
+    });
+
+  }
+};
 
   const handleEdit =
     (listing) => {
@@ -221,7 +236,7 @@ export default function MarketplacePage() {
         verifiedIds[
           listing.id
         ] ||
-        listing.verified;
+        listing.blockchain_verified;
 
       if (!verified) {
         setToast({
@@ -239,36 +254,41 @@ export default function MarketplacePage() {
           qty
         );
 
-        let verified = false;
+      setToast({
+        type: "success",
+        message: "Purchase successful.",
+      });
 
-        if (purchase && purchase.id) {
-          try {
-            await apiClient.verifyPurchase(purchase.id);
+      setQuantities((prev) => ({
+        ...prev,
+        [listing.id]: "",
+      }));
 
-            verified = true;
+      setListings([]);
 
-            setVerifiedIds((prev) => ({
-              ...prev,
-              [listing.id]: true,
-            }));
-          } catch (err) {
-            console.warn(
-              "Purchase verification failed",
-              err
-            );
-          }
-        }
+setHasMore(true);
 
-        setToast({
-          type: "success",
-          message: verified
-            ? "Purchase successful and verified."
-            : "Purchase successful. Verification pending.",
-        });
+const data =
+  await apiClient.getActiveListings(
+    0,
+    limit,
+    energySource === "All"
+      ? undefined
+      : energySource
+  );
 
-        setListings([]);
-        setPage(0);
-        setHasMore(true);
+const records =
+  Array.isArray(data)
+    ? data
+    : [];
+
+setListings(records);
+
+setPage(0);
+
+setHasMore(
+  records.length === limit
+);
       } catch (err) {
         setToast({
           type: "error",
@@ -278,6 +298,42 @@ export default function MarketplacePage() {
         });
       }
     };
+
+    async function refreshListings() {
+  setListings([]);
+  setHasMore(true);
+  setPage(0);
+
+  try {
+    setLoading(true);
+
+    const data =
+      await apiClient.getActiveListings(
+        0,
+        limit,
+        energySource
+      );
+
+    const records =
+      Array.isArray(data)
+        ? data
+        : [];
+
+    setListings(records);
+
+    setHasMore(
+      records.length === limit
+    );
+  } catch (err) {
+    setToast({
+      type: "error",
+      message:
+        "Failed to refresh listings.",
+    });
+  } finally {
+    setLoading(false);
+  }
+}
 
   const handleCancel =
     (listing) => {
@@ -321,17 +377,16 @@ export default function MarketplacePage() {
       }
     };
 
-  const sources = [
-    "All",
-    ...Array.from(
-      new Set(
-        listings.map(
-          (l) =>
-            l.energy_source
-        )
-      )
-    ).filter(Boolean),
-  ];
+const sources = [
+  "All",
+  "SOLAR",
+  "WIND",
+  "HYDRO",
+  "BIOMASS",
+  "GEOTHERMAL",
+  "TIDAL",
+  "OTHER",
+];
 
   return (
     <>
@@ -391,15 +446,7 @@ export default function MarketplacePage() {
 
           <button
             className="filter-btn"
-            onClick={() => {
-              setListings(
-                []
-              );
-              setPage(0);
-              setHasMore(
-                true
-              );
-            }}
+            onClick={refreshListings}
           >
             Refresh
           </button>
@@ -466,20 +513,28 @@ export default function MarketplacePage() {
                       </div>
 
                       <div className="marketplace-verify">
+
                         {verified ? (
-                          <div className="verified-btn">Verified</div>
+
+                          <div className="verified-badge">
+                            ✅ Verified
+                          </div>
+
                         ) : (
-                          // only admins may trigger verification
-                          role === "ADMIN" ? (
-                            <button
-                              className="verify-btn"
-                              onClick={() => handleVerify(listing)}
-                            >
-                              Verify
-                            </button>
-                          ) : null
+
+                          <button
+                            className="validate-btn"
+                            onClick={() =>
+                              handleVerify(listing)
+                            }
+                          >
+                            Validate
+                          </button>
+
                         )}
+
                       </div>
+                      
 
                       <h3>
                         {
@@ -566,8 +621,11 @@ export default function MarketplacePage() {
 
                         <button
                           className="buy-btn"
-                          disabled={
+                          disabled={!verified}
+                          title={
                             !verified
+                              ? "Validate the credit first"
+                              : ""
                           }
                           onClick={() =>
                             handleBuy(
@@ -575,7 +633,9 @@ export default function MarketplacePage() {
                             )
                           }
                         >
-                          Buy
+                          {verified
+                            ? "Buy"
+                            : "Validate First"}
                         </button>
                       </>
                     )}

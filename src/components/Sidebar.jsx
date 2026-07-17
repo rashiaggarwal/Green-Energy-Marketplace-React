@@ -53,7 +53,7 @@ export default function Sidebar() {
           🏠 Dashboard
         </NavLink>
 
-        {role !== "ADMIN" && (
+        {role === "SELLER" && (
           <NavLink
             to="/credits"
             className={({ isActive }) =>
