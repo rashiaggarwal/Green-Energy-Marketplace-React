@@ -72,6 +72,33 @@ useEffect(() => {
 
 }, [energySource]);
 
+function getSourceClass(src) {
+  const s = (src || "").toLowerCase();
+
+  switch (s) {
+    case "solar":
+      return "solar";
+
+    case "wind":
+      return "wind";
+
+    case "hydro":
+      return "hydro";
+
+    case "biomass":
+      return "biomass";
+
+    case "geothermal":
+      return "geothermal";
+
+    case "tidal":
+      return "tidal";
+
+    default:
+      return "other";
+  }
+}
+
   useEffect(() => {
     const observer =
       new IntersectionObserver(
