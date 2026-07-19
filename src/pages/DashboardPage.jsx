@@ -9,7 +9,7 @@ const ongoingFetches = new Set();
 
 export default function DashboardPage() {
   const user = JSON.parse(
-    localStorage.getItem("user") || "{}"
+    sessionStorage.getItem("user") || "{}"
   );
 
   const navigate = useNavigate();
@@ -298,7 +298,8 @@ function getSourceClass(src) {
         <p
           style={{
             color:
-              user.is_verified
+              user.verificationStatus ===
+              "Verified"
                 ? "#86efac"
                 : "#fca5a5",
 
@@ -308,7 +309,7 @@ function getSourceClass(src) {
           }}
         >
           Status:{" "}
-          {user.is_verified ||
+          {user.verificationStatus ||
             "UnVerified"}
         </p>
 
@@ -559,7 +560,7 @@ function getSourceClass(src) {
             ) : (
               purchases.map((p) => (
                 <div key={p.id} className="marketplace-audit-card">
-                  <h3>{p.listing_id || p.id}</h3>
+                  <h3>EC-{p.energy_kwh}-{p.listing_id?.slice(0, 8)}</h3>
 
                   <div className="marketplace-info">
                     <p>
@@ -584,14 +585,14 @@ function getSourceClass(src) {
                     </p>
                   </div>
 
-                  <div className="marketplace-actions">
+                  {/* <div className="marketplace-actions">
                     <button
                       className="audit-btn"
                       onClick={() => navigate(`/marketplace/${p.listing_id}`)}
                     >
                       View Listing
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               ))
             )}

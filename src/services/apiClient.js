@@ -22,7 +22,7 @@ function hideGlobalLoader() {
 }
 
 function getToken() {
-  return localStorage.getItem(
+  return sessionStorage.getItem(
     "access_token"
   );
 }
@@ -108,17 +108,76 @@ export const apiClient = {
         }
       );
 
-    localStorage.setItem(
+    sessionStorage.setItem(
       "access_token",
       response.access_token
     );
 
-    localStorage.setItem(
+    sessionStorage.setItem(
       "refresh_token",
       response.refresh_token
     );
 
-    localStorage.setItem("user", JSON.stringify(response.user));
+    sessionStorage.setItem("user", JSON.stringify(response.user));
+
+    try {
+
+  const walletAddress =
+    response.user?.wallet_address;
+
+  if (walletAddress) {
+
+    const balanceResponse =
+      await request(
+        `/api/v1/blockchain/balance/${walletAddress}`
+      );
+
+    const isVerified =
+      balanceResponse &&
+      balanceResponse.balance_kwh !== undefined &&
+      balanceResponse.balance_kwh !== null;
+
+    const updatedUser = {
+      ...response.user,
+      balance:
+        balanceResponse.balance_kwh || 0,
+      verificationStatus:
+        isVerified
+          ? "Verified"
+          : "UnVerified",
+    };
+
+    sessionStorage.setItem(
+      "user",
+      JSON.stringify(updatedUser)
+    );
+
+    sessionStorage.setItem(
+      "wallet_balance",
+      JSON.stringify(balanceResponse)
+    );
+
+  }
+
+} catch (error) {
+
+  console.error(
+    "Failed to fetch wallet balance",
+    error
+  );
+
+  const updatedUser = {
+    ...response.user,
+    balance: 0,
+    verificationStatus:
+      "UnVerified",
+  };
+
+  sessionStorage.setItem(
+    "user",
+    JSON.stringify(updatedUser)
+  );
+}
 
     return response;
   },
@@ -253,15 +312,15 @@ async logoutUser() {
       }
     );
   } finally {
-    localStorage.removeItem(
+    sessionStorage.removeItem(
       "access_token"
     );
 
-    localStorage.removeItem(
+    sessionStorage.removeItem(
       "refresh_token"
     );
 
-    localStorage.removeItem(
+    sessionStorage.removeItem(
       "user"
     );
   }

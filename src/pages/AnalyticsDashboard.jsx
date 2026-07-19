@@ -40,35 +40,74 @@ export default function AnalyticsDashboard() {
     loadAnalytics();
   }, [filters]);
 
-  async function loadAnalytics() {
-    try {
-      setLoading(true);
-      const fromDate = new Date(
-        Date.now() - Number(filters.period) * 24 * 60 * 60 * 1000
-      ).toISOString();
+async function loadAnalytics() {
+  try {
+    setLoading(true);
 
-      const params = new URLSearchParams({
-        created_from: fromDate,
-        completed_from: fromDate,
-        skip: 0,
-        limit: 50,
-        ...(filters.energySource && { energy_source: filters.energySource }),
-        ...(filters.location && { location: filters.location }),
-      }).toString();
+    const fromDate = new Date(
+      Date.now() -
+      Number(filters.period) *
+      24 *
+      60 *
+      60 *
+      1000
+    ).toISOString();
 
-      const [activeResponse, purchaseResponse] = await Promise.all([
-        apiClient.getPublicActiveListings(`?${params}`),
-        apiClient.getPublicPurchases(`?${params}`),
-      ]);
+    const params = new URLSearchParams({
+      created_from: fromDate,
+      completed_from: fromDate,
 
-      setActiveListings(activeResponse);
-      setPurchases(purchaseResponse);
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setLoading(false);
-    }
+      ...(filters.energySource && {
+        energy_source:
+          filters.energySource,
+      }),
+
+      ...(filters.location && {
+        location:
+          filters.location,
+      }),
+    }).toString();
+
+    console.log(
+      "Selected Filter:",
+      filters.energySource
+    );
+
+    console.log(
+      "Query Params:",
+      params
+    );
+
+    const [
+      activeResponse,
+      purchaseResponse,
+    ] = await Promise.all([
+      apiClient.getPublicActiveListings(
+        `?${params}`
+      ),
+
+      apiClient.getPublicPurchases(
+        `?${params}`
+      ),
+    ]);
+
+    console.log(
+      "ACTIVE RESPONSE",
+      activeResponse
+    );
+
+    console.log(
+      "PURCHASE RESPONSE",
+      purchaseResponse
+    );
+
+    setActiveListings(activeResponse);
+    setPurchases(purchaseResponse);
+
+  } finally {
+    setLoading(false);
   }
+}
 
   const supplyShare = useMemo(() => {
     if (!activeListings?.source_breakdown) return [];

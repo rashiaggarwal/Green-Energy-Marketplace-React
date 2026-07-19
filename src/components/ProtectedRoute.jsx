@@ -4,7 +4,7 @@ export default function ProtectedRoute({
   children,
 }) {
 const token =
-  localStorage.getItem(
+  sessionStorage.getItem(
     "access_token"
   );
 

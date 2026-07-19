@@ -6,7 +6,7 @@ import Toast from "../components/Toast";
 
 export default function MarketplacePage() {
   const user = JSON.parse(
-    localStorage.getItem("user") || "{}"
+    sessionStorage.getItem("user") || "{}"
   );
 
   const role = user?.role || "BUYER";
@@ -514,7 +514,7 @@ const sources = [
 
                       <div className="marketplace-verify">
 
-                        {verified ? (
+                        {listing.verified && !listing.is_tampered ? (
 
                           <div className="verified-badge">
                             ✅ Verified
@@ -522,14 +522,9 @@ const sources = [
 
                         ) : (
 
-                          <button
-                            className="validate-btn"
-                            onClick={() =>
-                              handleVerify(listing)
-                            }
-                          >
-                            Validate
-                          </button>
+                          <div className="tampered-badge">
+                              Tampered
+                          </div>
 
                         )}
 

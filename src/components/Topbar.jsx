@@ -1,6 +1,6 @@
 export default function Topbar() {
   const user = JSON.parse(
-    localStorage.getItem("user") ||
+    sessionStorage.getItem("user") ||
       "{}"
   );
 

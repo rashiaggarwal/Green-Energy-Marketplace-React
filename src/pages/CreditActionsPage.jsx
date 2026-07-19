@@ -3,7 +3,7 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { apiClient } from "../services/apiClient";
 
 export default function CreditActionsPage() {
-  const user = JSON.parse(localStorage.getItem("user") || "{}");
+  const user = JSON.parse(sessionStorage.getItem("user") || "{}");
   const role = user?.role || "SELLER";
   const navigate = useNavigate();
 
@@ -88,7 +88,7 @@ export default function CreditActionsPage() {
       }
     }
 
-    const user = JSON.parse(localStorage.getItem("user") || "null");
+    const user = JSON.parse(sessionStorage.getItem("user") || "null");
     const seller_id = user?.id;
 
     if (!seller_id) {
@@ -167,26 +167,6 @@ export default function CreditActionsPage() {
   </p>
 
 </div>
-
-      <div className="credit-layout">
-
-  <div className="credit-visual">
-
-    <div className="credit-visual-content">
-
-      <h2>
-        ⚡ Renewable Energy Credit
-      </h2>
-
-      <p>
-        Create listings for solar,
-        wind, hydro, biomass and
-        other energy sources.
-      </p>
-
-    </div>
-
-  </div>
 
   <form
     className="card credit-form"
@@ -296,7 +276,6 @@ export default function CreditActionsPage() {
           </div>
         )}
       </form>
-      </div>
     </div>
   );
 }
