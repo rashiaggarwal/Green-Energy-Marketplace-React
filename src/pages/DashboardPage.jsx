@@ -39,6 +39,14 @@ export default function DashboardPage() {
     energySource: "",
     status: "",
   });
+  const [auditModalOpen, setAuditModalOpen] =
+  useState(false);
+
+  const [selectedAudit, setSelectedAudit] =
+  useState(null);
+
+  const [auditLoading, setAuditLoading] =
+  useState(false);
 
   useEffect(() => {
 
@@ -224,6 +232,39 @@ function getSourceClass(src) {
       setConfirming(false);
     }
   };
+
+  const handleViewAudit =
+  async (listingId) => {
+
+    try {
+
+      setAuditLoading(true);
+
+      const audit =
+        await apiClient.getListingAuditTrace(
+          listingId
+        );
+
+      setSelectedAudit(audit);
+
+      setAuditModalOpen(true);
+
+    } catch {
+
+      setToast({
+        type: "error",
+        message:
+          "Unable to load audit trail.",
+      });
+
+    } finally {
+
+      setAuditLoading(false);
+
+    }
+
+};
+
 
   const handleVerify =
   async (listing) => {
@@ -516,13 +557,14 @@ function getSourceClass(src) {
                     </div>
 
                   <div className="marketplace-actions">
-                    {/* {l.is_available ? (
-                      <button className="audit-btn">Mark For Sale</button>
-                    ) : (
-                      <button className="audit-btn" disabled>
-                        Marked For Sale
-                      </button>
-                    )} */}
+                    <button
+                      className="audit-btn"
+                      onClick={() =>
+                        handleViewAudit(l.id)
+                      }
+                    >
+                      View Audit
+                    </button>
 
                     {l.status !== 'CANCELLED' && <button
                       className="audit-btn"

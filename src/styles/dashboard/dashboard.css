@@ -11,6 +11,23 @@
   gap: 20px;
 }
 
+.tx-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+
+  margin-top: 8px;
+
+  color: #2563eb;
+  font-weight: 600;
+
+  text-decoration: none;
+}
+
+.tx-link:hover {
+  text-decoration: underline;
+}
+
 @media (max-width: 768px) {
   .hero {
     grid-template-columns: 1fr;

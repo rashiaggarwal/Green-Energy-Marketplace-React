@@ -379,4 +379,10 @@ getMySales(skip = 0, limit = 20) {
     `/api/v1/purchases/my-sales?skip=${skip}&limit=${limit}`
   );
 },
+
+getListingAuditTrace(listingId) {
+  return request(
+    `/api/v1/audit/listing/${listingId}/trace`
+  );
+}
 };
