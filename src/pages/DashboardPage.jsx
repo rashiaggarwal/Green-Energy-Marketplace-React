@@ -27,15 +27,35 @@ export default function DashboardPage() {
   const [modalListing, setModalListing] = useState(null);
   const [confirming, setConfirming] = useState(false);
   const [toast, setToast] = useState(null);
-  const limit = 6;
+  const limit = 12;
   const loadingRef = useRef(loading);
   const hasMoreRef = useRef(hasMore);
   const listingsRef = useRef(0);
   const purchasesLoadingRef = useRef(purchasesLoading);
   const purchasesHasMoreRef = useRef(purchasesHasMore);
   const purchasesRef = useRef(0);
-  const [verifiedIds, setVerifiedIds] =
-  useState({});
+  const [verifiedIds, setVerifiedIds] = useState({});
+  const [filters, setFilters] = useState({
+    energySource: "",
+    status: "",
+  });
+
+  useEffect(() => {
+
+  if (role !== "SELLER") return;
+
+  setListings([]);
+
+  listingsRef.current = 0;
+
+  setHasMore(true);
+
+  fetchListings(0);
+
+}, [
+  filters.energySource,
+  filters.status,
+]);
 
   async function fetchListings(skip = 0) {
     if (loading) return;
@@ -48,7 +68,13 @@ export default function DashboardPage() {
     loadingRef.current = true;
 
     try {
-      const res = await apiClient.getMyListings(skip, limit);
+      const res =
+        await apiClient.getMyListings(
+          skip,
+          limit,
+          filters.energySource,
+          filters.status
+        );
 
       if (Array.isArray(res)) {
         setListings((prev) => {
@@ -272,8 +298,7 @@ function getSourceClass(src) {
         <p
           style={{
             color:
-              user.verificationStatus ===
-              "Verified"
+              user.is_verified
                 ? "#86efac"
                 : "#fca5a5",
 
@@ -283,7 +308,7 @@ function getSourceClass(src) {
           }}
         >
           Status:{" "}
-          {user.verificationStatus ||
+          {user.is_verified ||
             "UnVerified"}
         </p>
 
@@ -304,7 +329,7 @@ function getSourceClass(src) {
 
       {/* STATS */}
 
-      <div className="grid-4">
+      {/* <div className="grid-4">
 
         <div className="stat-card">
           <div>
@@ -345,12 +370,96 @@ function getSourceClass(src) {
           <div className="stat-icon">🛒</div>
         </div>
 
-      </div>
+      </div> */}
 
       {/* MY CREDITS (seller only) */}
       {role === "SELLER" && (
         <div className="card" style={{ marginTop: "24px" }}>
           <h2>⚡ My Credits</h2>
+          <div
+  style={{
+    display: "flex",
+    gap: 12,
+    marginTop: 20,
+  }}
+>
+
+  <select
+    value={
+      filters.energySource
+    }
+    onChange={(e) =>
+      setFilters((prev) => ({
+        ...prev,
+        energySource:
+          e.target.value,
+      }))
+    }
+  >
+    <option value="">
+      All Sources
+    </option>
+
+    <option value="SOLAR">
+      Solar
+    </option>
+
+    <option value="WIND">
+      Wind
+    </option>
+
+    <option value="HYDRO">
+      Hydro
+    </option>
+
+    <option value="BIOMASS">
+      Biomass
+    </option>
+
+    <option value="GEOTHERMAL">
+      Geothermal
+    </option>
+
+    <option value="TIDAL">
+      Tidal
+    </option>
+
+  </select>
+
+  <select
+    value={
+      filters.status
+    }
+    onChange={(e) =>
+      setFilters((prev) => ({
+        ...prev,
+        status:
+          e.target.value,
+      }))
+    }
+  >
+    <option value="">
+      All Status
+    </option>
+
+    <option value="ACTIVE">
+      Active
+    </option>
+
+    <option value="SOLD">
+      Sold
+    </option>
+
+    <option value="CANCELLED">
+      Cancelled
+    </option>
+
+    <option value="EXPIRED">
+      Expired
+    </option>
+  </select>
+
+</div>
 
           <div className="market-grid">
             {listings.length === 0 && !loading ? (
@@ -364,8 +473,7 @@ function getSourceClass(src) {
                     <div
                         className="marketplace-verify"
                       >
-                        {(verifiedIds[l.id] ||
-                          l.blockchain_verified) ? (
+                        {(l.verified && !l.is_tampered) ? (
 
                           <div
                             className="verified-badge"
@@ -375,20 +483,17 @@ function getSourceClass(src) {
 
                         ) : (
 
-                          <button
-                            className="validate-btn"
-                            onClick={() =>
-                              handleVerify(l)
-                            }
+                          <div
+                            className="tampered-badge"
                           >
-                            Validate
-                          </button>
-
+                            Tampered
+                          </div>
                         )}
                       </div>
-                    <div class="title">
-                      <h3>{l.title || "Untitled"}</h3>
-                    </div>
+                    <div className="card-info">
+                      <div class="title">
+                        <h3>{l.title || "Untitled"}</h3>
+                      </div>
 
                   <div className="marketplace-info">
                     <p>
@@ -407,6 +512,7 @@ function getSourceClass(src) {
                       <strong>Total Price:</strong> {l.total_price}
                     </p>
                   </div>
+                    </div>
 
                   <div className="marketplace-actions">
                     {/* {l.is_available ? (
@@ -417,21 +523,21 @@ function getSourceClass(src) {
                       </button>
                     )} */}
 
-                    <button
+                    {l.status !== 'CANCELLED' && <button
                       className="audit-btn"
                       onClick={() => navigate(`/credits?edit=${l.id}`)}
                       style={{ marginLeft: 8 }}
                     >
                       Edit
-                    </button>
+                    </button>}
 
-                    <button
+                    {l.status !== 'CANCELLED' && <button
                       className="audit-btn"
                       onClick={() => handleCancel(l)}
                       style={{ marginLeft: 8 }}
                     >
                       Cancel
-                    </button>
+                    </button>}
 
                   </div>
                 </div>

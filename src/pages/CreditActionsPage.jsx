@@ -151,13 +151,47 @@ export default function CreditActionsPage() {
   }
 
   return (
-    <div style={{ maxWidth: 760, margin: "0 auto" }}>
-      <div className="page-title">
-        <h2>{isEdit ? "Edit Credit Listing" : "Create Credit Listing"}</h2>
-        <p>{isEdit ? "Edit title and description for the listing." : "Fill all fields to create a credit listing."}</p>
-      </div>
+    <div className="credit-page">
+      <div className="page-title centered">
 
-      <form className="card" onSubmit={handleSubmit}>
+  <h2>
+    {isEdit
+      ? "Edit Energy Credit"
+      : "Create Energy Credit"}
+  </h2>
+
+  <p>
+    Publish renewable energy
+    credits to the GreenGrid
+    marketplace.
+  </p>
+
+</div>
+
+      <div className="credit-layout">
+
+  <div className="credit-visual">
+
+    <div className="credit-visual-content">
+
+      <h2>
+        ⚡ Renewable Energy Credit
+      </h2>
+
+      <p>
+        Create listings for solar,
+        wind, hydro, biomass and
+        other energy sources.
+      </p>
+
+    </div>
+
+  </div>
+
+  <form
+    className="card credit-form"
+    onSubmit={handleSubmit}
+  >
         <div className="field-grid">
 
           <div>
@@ -181,6 +215,7 @@ export default function CreditActionsPage() {
               type="number"
               min="0"
               step="0.01"
+              disabled={isEdit}
               value={form.price_per_kwh}
               onChange={handleChange}
               placeholder="1.00"
@@ -261,6 +296,7 @@ export default function CreditActionsPage() {
           </div>
         )}
       </form>
+      </div>
     </div>
   );
 }

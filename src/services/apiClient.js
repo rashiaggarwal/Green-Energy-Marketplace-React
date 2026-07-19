@@ -120,66 +120,7 @@ export const apiClient = {
 
     localStorage.setItem("user", JSON.stringify(response.user));
 
-try {
-
-  const walletAddress =
-    response.user?.wallet_address;
-
-  if (walletAddress) {
-
-    const balanceResponse =
-      await request(
-        `/api/v1/blockchain/balance/${walletAddress}`
-      );
-
-    const isVerified =
-      balanceResponse &&
-      balanceResponse.balance_kwh !== undefined &&
-      balanceResponse.balance_kwh !== null;
-
-    const updatedUser = {
-      ...response.user,
-      balance:
-        balanceResponse.balance_kwh || 0,
-      verificationStatus:
-        isVerified
-          ? "Verified"
-          : "UnVerified",
-    };
-
-    localStorage.setItem(
-      "user",
-      JSON.stringify(updatedUser)
-    );
-
-    localStorage.setItem(
-      "wallet_balance",
-      JSON.stringify(balanceResponse)
-    );
-
-  }
-
-} catch (error) {
-
-  console.error(
-    "Failed to fetch wallet balance",
-    error
-  );
-
-  const updatedUser = {
-    ...response.user,
-    balance: 0,
-    verificationStatus:
-      "UnVerified",
-  };
-
-  localStorage.setItem(
-    "user",
-    JSON.stringify(updatedUser)
-  );
-}
-
-return response;
+    return response;
   },
 
   getCurrentUser() {
@@ -247,11 +188,37 @@ return response;
     );
   },
 
-  getMyListings(skip = 0, limit = 10) {
-    return request(
-      `/api/v1/listings/my-listings?skip=${skip}&limit=${limit}`
+  getMyListings(
+  skip,
+  limit,
+  energySource,
+  status
+) {
+
+  const params =
+    new URLSearchParams({
+      skip,
+      limit,
+    });
+
+  if (energySource) {
+    params.append(
+      "energy_source",
+      energySource
     );
-  },
+  }
+
+  if (status) {
+    params.append(
+      "status",
+      status
+    );
+  }
+
+  return request(
+    `/api/v1/listings/my-listings?${params.toString()}`
+  );
+},
 
   getMyPurchases(skip = 0, limit = 10) {
     return request(

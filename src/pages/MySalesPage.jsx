@@ -144,10 +144,6 @@ export default function MySalesPage() {
             <h3>
             📊 Sales Summary
             </h3>
-
-            <div className="grid-4">
-            ...
-            </div>
             </div>
 
             <div
@@ -175,8 +171,11 @@ export default function MySalesPage() {
         <div>
 
                 <h3>
-                Sale #
-                {sale.id.slice(
+                EC-
+                {
+                  sale.energy_kwh
+                }-
+                {sale.listing_id.slice(
                     0,
                     8
                 )}
