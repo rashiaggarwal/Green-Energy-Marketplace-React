@@ -1,4 +1,4 @@
-export default function AuditTrailModal({
+export default function AuditTrailModel({
   open,
   audit,
   onClose,
