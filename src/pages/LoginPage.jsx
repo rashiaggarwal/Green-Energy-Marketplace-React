@@ -91,28 +91,39 @@ const login = async () => {
   return (
     <div className="auth-layout">
 
-      <div className="auth-header">
-        <h1>
-          Green Energy Marketplace
-        </h1>
+    <div className="landing-hero">
 
-        <p>
-          Peer-to-Peer Renewable Energy Trading
-        </p>
-      </div>
+  <div className="landing-overlay">
+    <div className="hero-content">
+      <h1>
+        ⚡ Green Energy Marketplace
+      </h1>
 
-      <div className="auth-content">
+      <p>
+        Blockchain-Powered Renewable
+        Energy Trading Platform
+      </p>
+    </div>
+  </div>
+</div>
+
+<div className="auth-content auth-centered">
+
+  <div className="auth-panel">
 
         <div className="page-title">
-          <h2>
-            Login / Registration
-          </h2>
 
-          <p>
-            Login with your account or
-            register a new user.
-          </p>
-        </div>
+  <h2>
+    Welcome to GreenGrid
+  </h2>
+
+  <p className="header">
+    Login to continue or create a
+    new account to start trading
+    renewable energy credits.
+  </p>
+
+</div>
 
         <div className="card auth-switch-card">
 
@@ -146,13 +157,15 @@ const login = async () => {
               Register
             </button>
 
+            </div>
+
           </div>
 
         </div>
 
         {mode === "login" && (
           <div className="auth-grid">
-
+            
               <form
                 className="card"
                 onSubmit={(e) => {
@@ -161,10 +174,9 @@ const login = async () => {
                 }}
               >
 
-                <h2>
-                  🔐 Login
-                </h2>
-
+              <h2 className="form-title">
+                Sign In
+              </h2>
 
               <div className="form-group">
                 <label>
@@ -227,17 +239,6 @@ const login = async () => {
 
             </form>
 
-            <div className="card status-card">
-              <h3>
-                Login Status
-              </h3>
-
-              <p>
-                Enter valid email and
-                password.
-              </p>
-            </div>
-
           </div>
         )}
 
@@ -252,8 +253,8 @@ const login = async () => {
               }}
             >
 
-              <h2>
-                👤 Registration
+              <h2 className="form-title">
+                Create Account
               </h2>
 
               <div className="field-grid">
@@ -476,26 +477,6 @@ const login = async () => {
               </div>
 
             </form>
-
-            <div className="card status-card">
-
-              <h2>
-                Registration Status
-              </h2>
-
-              <p>
-                Role:{" "}
-                {
-                  registerForm.role
-                }
-              </p>
-
-              <p>
-                Ready for
-                registration
-              </p>
-
-            </div>
 
           </div>
         )}

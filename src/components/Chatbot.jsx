@@ -156,12 +156,13 @@ const askQuestion = async () => {
           <div className="chat-header">
             <h3>GreenGrid Assistant</h3>
 
-            <button
-              className="refresh-chat"
-              onClick={clearChat}
-            >
-              ↻
-            </button>
+           <button
+            className="refresh-chat-icon"
+            onClick={clearChat}
+            title="New Chat"
+          >
+            ↻
+          </button>
           </div>
 
           <div className="chat-messages">
