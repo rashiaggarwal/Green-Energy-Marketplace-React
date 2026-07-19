@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { apiClient } from "../services/apiClient";
 import ConfirmModal from "../components/ConfirmModal";
 import Toast from "../components/Toast";
+import AuditTrailModal from "../components/AuditTrailModel";
 
 export default function MarketplacePage() {
   const user = JSON.parse(

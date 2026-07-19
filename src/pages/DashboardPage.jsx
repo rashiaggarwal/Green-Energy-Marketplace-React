@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { apiClient } from "../services/apiClient";
 import ConfirmModal from "../components/ConfirmModal";
 import Toast from "../components/Toast";
+import AuditTrailModal from "../components/AuditTrailModal";
 
 // track in-flight listing fetches (module-level so it survives StrictMode remounts)
 const ongoingFetches = new Set();
@@ -669,6 +670,14 @@ function getSourceClass(src) {
           />
 
           <Toast toast={toast} onClose={() => setToast(null)} />
+
+            <AuditTrailModal
+              open={auditModalOpen}
+              audit={selectedAudit}
+              onClose={() =>
+                setAuditModalOpen(false)
+              }
+            />
     </>
   );
 }
