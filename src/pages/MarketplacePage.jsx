@@ -233,10 +233,11 @@ const handleVerify = async (
       }
 
       const verified =
-        verifiedIds[
-          listing.id
-        ] ||
-        listing.blockchain_verified;
+  verifiedIds[
+    listing.id
+  ] ||
+  (listing.verified &&
+    !listing.is_tampered);
 
       if (!verified) {
         setToast({
@@ -445,10 +446,11 @@ const sources = [
           </div>
 
           <button
-            className="filter-btn"
+            className="refresh-btn"
             onClick={refreshListings}
+            title="Refresh Listings"
           >
-            Refresh
+            ↻
           </button>
 
         </div>
@@ -507,7 +509,9 @@ const sources = [
                     <div>
 
                       <div
-                        className="marketplace-badge renewable"
+                        className={`marketplace-badge ${getSourceClass(
+                          listing.energy_source
+                        )}`}
                       >
                         {listing.energy_source}
                       </div>
@@ -585,54 +589,44 @@ const sources = [
 
                     {role ===
                       "BUYER" && (
-                      <>
-                        <input
-                          type="number"
-                          className="market-qty-input"
-                          placeholder="kWh"
-                          min="1"
-                          max={
-                            listing.energy_kwh
-                          }
-                          value={
-                            quantities[
-                              listing
-                                .id
-                            ] ??
-                            ""
-                          }
-                          onChange={(
-                            e
-                          ) =>
-                            handleQuantityChange(
-                              listing.id,
-                              e
-                                .target
-                                .value,
-                              listing.energy_kwh
-                            )
-                          }
-                        />
+                      <div className="buy-row">
 
-                        <button
-                          className="buy-btn"
-                          disabled={!verified}
-                          title={
-                            !verified
-                              ? "Validate the credit first"
-                              : ""
-                          }
-                          onClick={() =>
-                            handleBuy(
-                              listing
-                            )
-                          }
-                        >
-                          {verified
-                            ? "Buy"
-                            : "Validate First"}
-                        </button>
-                      </>
+  <input
+    type="number"
+    className="market-qty-input"
+    placeholder="kWh"
+    min="1"
+    max={listing.energy_kwh}
+    value={
+      quantities[listing.id] ?? ""
+    }
+    onChange={(e) =>
+      handleQuantityChange(
+        listing.id,
+        e.target.value,
+        listing.energy_kwh
+      )
+    }
+  />
+
+  <button
+    className="buy-btn"
+    disabled={!verified}
+    title={
+      !verified
+        ? "Validate the credit first"
+        : ""
+    }
+    onClick={() =>
+      handleBuy(listing)
+    }
+  >
+    {verified
+      ? "Buy"
+      : "Verify"}
+  </button>
+
+</div>
                     )}
 
                     {role === "SELLER" && (

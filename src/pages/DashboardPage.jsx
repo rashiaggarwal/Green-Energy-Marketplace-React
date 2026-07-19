@@ -566,13 +566,13 @@ function getSourceClass(src) {
                       View Audit
                     </button>
 
-                    {l.status !== 'CANCELLED' && <button
+                    {/* {l.status !== 'CANCELLED' && <button
                       className="audit-btn"
                       onClick={() => navigate(`/credits?edit=${l.id}`)}
                       style={{ marginLeft: 8 }}
                     >
                       Edit
-                    </button>}
+                    </button>} */}
 
                     {l.status !== 'CANCELLED' && <button
                       className="audit-btn"
@@ -602,6 +602,14 @@ function getSourceClass(src) {
             ) : (
               purchases.map((p) => (
                 <div key={p.id} className="marketplace-audit-card">
+                  <div
+                    className={`marketplace-badge ${getSourceClass(
+                      p.energy_source
+                    )}`}
+                  >
+                    {(p.energy_source || "OTHER")
+                      .replace(/_/g, " ")}
+                  </div>
                   <h3>EC-{p.energy_kwh}-{p.listing_id?.slice(0, 8)}</h3>
 
                   <div className="marketplace-info">
@@ -635,6 +643,14 @@ function getSourceClass(src) {
                       View Listing
                     </button>
                   </div> */}
+                  <button
+                      className="audit-btn"
+                      onClick={() =>
+                        handleViewAudit(l.id)
+                      }
+                    >
+                      View Audit
+                    </button>
                 </div>
               ))
             )}

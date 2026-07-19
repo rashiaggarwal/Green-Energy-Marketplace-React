@@ -382,7 +382,7 @@ getMySales(skip = 0, limit = 20) {
 
 getListingAuditTrace(listingId) {
   return request(
-    `/api/v1/audit/listing/${listingId}/trace`
+    `/api/v1/api/v1/audit/listing/${listingId}/trace`
   );
 }
 };

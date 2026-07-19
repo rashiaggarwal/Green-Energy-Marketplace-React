@@ -49,7 +49,7 @@ export default function Chatbot() {
   const [messages, setMessages] = useState([
     {
       role: "assistant",
-      text: "Hi! Ask me anything about GreenGrid.",
+      text: "Hi! Ask me anything about Green Energy Marketplace.",
     },
   ]);
 
@@ -133,7 +133,7 @@ const askQuestion = async () => {
       {
         role: "assistant",
         text:
-          "Unable to connect to GreenGrid Assistant.",
+          "Unable to connect to Green Energy Assistant.",
       },
     ]);
   } finally {
@@ -154,7 +154,7 @@ const askQuestion = async () => {
         <div className="chat-window">
 
           <div className="chat-header">
-            <h3>GreenGrid Assistant</h3>
+            <h3>Green Energy Marketplace Assistant</h3>
 
            <button
             className="refresh-chat-icon"

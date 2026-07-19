@@ -100,7 +100,7 @@ const login = async () => {
       </h1>
 
       <p>
-        Blockchain-Powered Renewable
+        AI Blockchain-Powered Renewable
         Energy Trading Platform
       </p>
     </div>
@@ -109,7 +109,7 @@ const login = async () => {
 
 <div className="auth-content auth-centered">
 
-  <div className="auth-panel">
+  {/* <div className="auth-panel">
 
         <div className="page-title">
 
@@ -161,7 +161,7 @@ const login = async () => {
 
           </div>
 
-        </div>
+        </div> */}
 
         {mode === "login" && (
           <div className="auth-grid">
@@ -236,6 +236,22 @@ const login = async () => {
                   ? "Logging in..."
                   : "Login"}
               </button>
+
+              <button
+              className={
+                mode === "register"
+                  ? "btn active-btn"
+                  : "btn outline-btn"
+              }
+              style={{marginLeft: 12}}
+              onClick={() =>
+                setMode(
+                  "register"
+                )
+              }
+            >
+              Create Account
+            </button>
 
             </form>
 
@@ -470,8 +486,21 @@ const login = async () => {
                   disabled={loading}
                 >
                   {loading
-                    ? "Registering..."
-                    : "Register User"}
+                    ? "Creating..."
+                    : "Create Account"}
+                </button>
+
+                <button
+                  className={
+                    mode === "login"
+                      ? "btn active-btn"
+                      : "btn outline-btn"
+                  }
+                  onClick={() =>
+                    setMode("login")
+                  }
+                >
+                  Login
                 </button>
 
               </div>
