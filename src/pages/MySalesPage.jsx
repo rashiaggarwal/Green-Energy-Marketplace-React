@@ -82,11 +82,6 @@ export default function MySalesPage() {
         <h2>
           💰 My Sales
         </h2>
-
-        <p>
-          All completed
-          and pending sales
-        </p>
       </div>
 
       <div className="grid-4">

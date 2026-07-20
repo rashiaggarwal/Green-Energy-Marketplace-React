@@ -75,6 +75,14 @@ export default function AuditTrailModel({
     });
   }
 
+  const orderedEvents =
+  [...audit.event_timeline]
+    .sort(
+      (a, b) =>
+        new Date(a.timestamp) -
+        new Date(b.timestamp)
+    );
+
   return (
     <div className="audit-overlay">
       <div className="audit-modal">
@@ -193,7 +201,7 @@ export default function AuditTrailModel({
 
         <div className="events-grid">
 
-          {audit.event_timeline.map(
+          {orderedEvents.map(
             (event) => (
 
               <div
@@ -259,7 +267,7 @@ export default function AuditTrailModel({
                 )}
 
                 {event.blockchain_tx_hash && (
-                  <a href={`https://sepolia.etherscan.io/tx/${event.blockchain_tx_hash}`}>
+                  <a href={`https://sepolia.etherscan.io/tx/${event.blockchain_tx_hash}`} target="_blank" rel="noopener noreferrer">
                     🔗 View Blockchain Transaction
                   </a>
                 )}

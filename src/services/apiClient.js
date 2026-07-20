@@ -202,6 +202,12 @@ export const apiClient = {
     );
   },
 
+  getUser(id) {
+    return request(
+      `/api/v1/users/${id}`
+    );
+  },
+
   getActiveListings(skip = 0, limit = 10, energy_source) {
     const params = new URLSearchParams();
     params.append("skip", String(skip));

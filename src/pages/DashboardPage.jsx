@@ -66,6 +66,34 @@ export default function DashboardPage() {
   filters.status,
 ]);
 
+useEffect(() => {
+  refreshUser();
+}, []);
+
+const refreshUser = async () => {
+  try {
+
+    const latestUser =
+      await apiClient.getUser(
+        user.id
+      );
+
+    sessionStorage.setItem(
+      "user",
+      JSON.stringify(latestUser)
+    );
+
+  } catch (err) {
+
+    console.error(
+      "Failed to refresh user data",
+      err
+    );
+
+  }
+};
+
+
   async function fetchListings(skip = 0) {
     if (loading) return;
     // avoid duplicate requests for the same skip (handles StrictMode double-invoke)
@@ -518,18 +546,6 @@ const consumeCredit = async (
 
     <option value="HYDRO">
       Hydro
-    </option>
-
-    <option value="BIOMASS">
-      Biomass
-    </option>
-
-    <option value="GEOTHERMAL">
-      Geothermal
-    </option>
-
-    <option value="TIDAL">
-      Tidal
     </option>
 
   </select>

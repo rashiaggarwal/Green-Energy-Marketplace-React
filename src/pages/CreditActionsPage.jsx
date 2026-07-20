@@ -215,7 +215,6 @@ export default function CreditActionsPage() {
               <option value="SOLAR">Solar</option>
               <option value="WIND">Wind</option>
               <option value="HYDRO">Hydro</option>
-              <option value="OTHER">Other</option>
             </select>
           </div>
 

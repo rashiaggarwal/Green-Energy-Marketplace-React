@@ -411,10 +411,6 @@ const sources = [
   "SOLAR",
   "WIND",
   "HYDRO",
-  "BIOMASS",
-  "GEOTHERMAL",
-  "TIDAL",
-  "OTHER",
 ];
 
   return (
