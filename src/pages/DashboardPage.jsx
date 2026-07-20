@@ -218,6 +218,71 @@ function getSourceClass(src) {
     setModalOpen(true);
   };
 
+const consumeCredit = async (
+  purchaseId
+) => {
+  try {
+
+    await apiClient.consumeCredit(
+      purchaseId
+    );
+
+    setToast({
+      type: "success",
+      message:
+        "Purchase consumed successfully.",
+    });
+
+    await refreshPurchases();
+
+  } catch (err) {
+
+    console.error(err);
+
+    setToast({
+      type: "error",
+      message:
+        err?.message ||
+        "Consumption failed.",
+    });
+  }
+};
+
+  async function refreshPurchases() {
+  try {
+    setPurchasesLoading(true);
+
+    const res = await apiClient.getMyPurchases(
+      0,
+      limit
+    );
+
+    const records = Array.isArray(res)
+      ? res
+      : [];
+
+    setPurchases(records);
+
+    purchasesRef.current =
+      records.length;
+
+    setPurchasesHasMore(
+      records.length === limit
+    );
+
+  } catch (err) {
+    console.error(err);
+
+    setToast({
+      type: "error",
+      message:
+        "Failed to refresh purchases.",
+    });
+  } finally {
+    setPurchasesLoading(false);
+  }
+}
+
   const confirmCancel = async () => {
     if (!modalListing) return;
     setConfirming(true);
@@ -603,14 +668,14 @@ function getSourceClass(src) {
             ) : (
               purchases.map((p) => (
                 <div key={p.id} className="marketplace-audit-card">
-                  <div
+                  {p.energy_source && <div
                     className={`marketplace-badge ${getSourceClass(
                       p.energy_source
                     )}`}
                   >
-                    {(p.energy_source || "OTHER")
+                    {(p.energy_source)
                       .replace(/_/g, " ")}
-                  </div>
+                  </div>}
                   <h3>EC-{p.energy_kwh}-{p.listing_id?.slice(0, 8)}</h3>
 
                   <div className="marketplace-info">
@@ -636,22 +701,23 @@ function getSourceClass(src) {
                     </p>
                   </div>
 
-                  {/* <div className="marketplace-actions">
-                    <button
+                  <div className="marketplace-actions">
+                    {p.status !== 'CONSUMED' && <button
                       className="audit-btn"
-                      onClick={() => navigate(`/marketplace/${p.listing_id}`)}
+                      onClick={() => consumeCredit(p.id)}
                     >
-                      View Listing
-                    </button>
-                  </div> */}
-                  <button
+                      Consume
+                    </button>}
+
+                     <button
                       className="audit-btn"
                       onClick={() =>
-                        handleViewAudit(l.id)
+                        handleViewAudit(p.id)
                       }
                     >
                       View Audit
                     </button>
+                  </div>
                 </div>
               ))
             )}
