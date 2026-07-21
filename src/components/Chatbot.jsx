@@ -112,19 +112,25 @@ const askQuestion = async () => {
         )
       ).filter(Boolean);
 
-    setMessages((prev) => [
-      ...prev,
-      {
-        role: "assistant",
-        text:
-          response?.answer ||
-          response?.response ||
-          "No response received.",
+    const apiEndpoints =
+  response?.api_summary?.tool_results
+    ?.map((t) => t.endpoint)
+    ?.filter(Boolean) || [];
 
-        sources:
-          uniqueSources,
-      },
-    ]);
+setMessages((prev) => [
+  ...prev,
+  {
+    role: "assistant",
+    text:
+      response?.answer ||
+      response?.response ||
+      "No response received.",
+
+    sources: uniqueSources,
+
+    endpoints: apiEndpoints,
+  },
+]);
   } catch (error) {
     console.error(error);
 
@@ -186,28 +192,39 @@ const askQuestion = async () => {
                     msg.text
                   )}
 
-                  {msg.sources?.length >
-                    0 && (
-                    <div className="chat-sources">
-                      <div className="source-title">
-                        📚 Sources
-                      </div>
+                  {(msg.sources?.length > 0 ||
+  msg.endpoints?.length > 0) && (
 
-                      {msg.sources.map(
-                        (
-                          source,
-                          idx
-                        ) => (
-                          <div
-                            key={idx}
-                            className="source-chip"
-                          >
-                            📄 {source}
-                          </div>
-                        )
-                      )}
-                    </div>
-                  )}
+  <div className="chat-sources">
+
+    <div className="source-title">
+      📚 Sources Used
+    </div>
+
+    {msg.sources?.map(
+      (source, idx) => (
+        <div
+          key={`src-${idx}`}
+          className="source-chip"
+        >
+          📄 {source}
+        </div>
+      )
+    )}
+
+    {msg.endpoints?.map(
+      (endpoint, idx) => (
+        <div
+          key={`api-${idx}`}
+          className="source-chip api-chip"
+        >
+          🔌 {endpoint}
+        </div>
+      )
+    )}
+
+  </div>
+)}
                 </>
               </div>
             ))}

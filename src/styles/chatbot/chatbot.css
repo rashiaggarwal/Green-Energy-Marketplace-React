@@ -201,3 +201,43 @@
 
   transform: rotate(180deg);
 }
+
+.chat-sources {
+  margin-top: 12px;
+
+  padding-top: 10px;
+
+  border-top: 1px solid #e2e8f0;
+}
+
+.source-title {
+  font-weight: 700;
+
+  margin-bottom: 8px;
+
+  color: #475569;
+}
+
+.source-chip {
+  display: inline-block;
+
+  margin: 4px;
+
+  padding: 6px 10px;
+
+  border-radius: 999px;
+
+  background: #f1f5f9;
+
+  color: #334155;
+
+  font-size: 12px;
+}
+
+.api-chip {
+  background: #eff6ff;
+
+  color: #2563eb;
+
+  border: 1px solid #bfdbfe;
+}

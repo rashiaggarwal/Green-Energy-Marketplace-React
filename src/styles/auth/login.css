@@ -23,6 +23,7 @@
 
 .auth-content {
   padding: 30px;
+  position: relative;
 }
 
 .auth-switch-card {
@@ -45,7 +46,7 @@
 
   gap: 24px;
 
-  margin-top: 24px;
+  margin-top: 52%;
 }
 
 .field-grid {
@@ -133,15 +134,13 @@ select {
 }
 
 .landing-hero {
-  height: 400px;
+  height: 40rem;
 
   margin-bottom: 30px;
 
   background-image: url("/landing-page.png");
 
   background-size: cover;
-
-  background-position: center;
 
   background-repeat: no-repeat;
 
@@ -199,24 +198,6 @@ select {
   font-size: 1.1rem;
 
   line-height: 1.6;
-}
-
-.landing-hero {
-  position: relative;
-
-  height: 380px;
-
-  width: 100%;
-
-  overflow: hidden;
-
-  border-radius: 24px;
-
-  margin-bottom: 40px;
-
-  box-shadow:
-    0 20px 50px
-    rgba(0,0,0,.15);
 }
 
 .landing-hero img {
@@ -317,14 +298,6 @@ select {
   max-width: 600px;
 
   margin: 0 auto;
-}
-
-.auth-grid {
-  display: flex;
-
-  justify-content: center;
-
-  margin-top: 24px;
 }
 
 .auth-grid .card {

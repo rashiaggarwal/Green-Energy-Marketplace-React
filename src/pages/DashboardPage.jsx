@@ -73,14 +73,8 @@ useEffect(() => {
 const refreshUser = async () => {
   try {
 
-    const latestUser =
-      await apiClient.getUser(
-        user.id
-      );
-
-    sessionStorage.setItem(
-      "user",
-      JSON.stringify(latestUser)
+    await apiClient.getWalletBalance(
+      user.wallet_address
     );
 
   } catch (err) {
@@ -481,6 +475,19 @@ const consumeCredit = async (
     Balance:{" "}
     <strong>
       {user.balance ?? 0}
+    </strong>
+  </p>
+
+  <p
+    style={{
+      marginTop: "8px",
+      fontSize: "13px",
+      color: "#e5e7eb",
+    }}
+  >
+    Token Balance (kwh):{" "}
+    <strong>
+      {user.balanceTokens ?? 0}
     </strong>
   </p>
 </div>

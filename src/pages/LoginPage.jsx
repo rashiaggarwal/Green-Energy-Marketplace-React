@@ -105,63 +105,8 @@ const login = async () => {
       </p>
     </div>
   </div>
-</div>
 
-<div className="auth-content auth-centered">
-
-  {/* <div className="auth-panel">
-
-        <div className="page-title">
-
-  <h2>
-    Welcome to GreenGrid
-  </h2>
-
-  <p className="header">
-    Login to continue or create a
-    new account to start trading
-    renewable energy credits.
-  </p>
-
-</div>
-
-        <div className="card auth-switch-card">
-
-          <div className="btn-row">
-
-            <button
-              className={
-                mode === "login"
-                  ? "btn active-btn"
-                  : "btn outline-btn"
-              }
-              onClick={() =>
-                setMode("login")
-              }
-            >
-              Login
-            </button>
-
-            <button
-              className={
-                mode === "register"
-                  ? "btn active-btn"
-                  : "btn outline-btn"
-              }
-              onClick={() =>
-                setMode(
-                  "register"
-                )
-              }
-            >
-              Register
-            </button>
-
-            </div>
-
-          </div>
-
-        </div> */}
+  <div className="auth-content auth-centered">
 
         {mode === "login" && (
           <div className="auth-grid">
@@ -511,6 +456,7 @@ const login = async () => {
         )}
 
       </div>
+</div>
 
     </div>
   );

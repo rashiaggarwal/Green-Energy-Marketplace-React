@@ -134,17 +134,18 @@ export const apiClient = {
 
     const isVerified =
       balanceResponse &&
-      balanceResponse.balance_kwh !== undefined &&
-      balanceResponse.balance_kwh !== null;
-
+      balanceResponse &&
+      balanceResponse.eth.balance_eth !== undefined &&
+      balanceResponse.eth.balance_eth !== null;
     const updatedUser = {
       ...response.user,
       balance:
-        balanceResponse.balance_kwh || 0,
+        balanceResponse.eth.balance_eth || 0,
       verificationStatus:
         isVerified
           ? "Verified"
           : "UnVerified",
+      balanceTokens: balanceResponse.sec_tokens.balance_kwh || 0,
     };
 
     sessionStorage.setItem(
@@ -356,10 +357,64 @@ async logoutUser() {
     );
   },
 
-  getWalletBalance(walletAddress) {
-  return request(
-    `/api/v1/blockchain/balance/${walletAddress}`
+  async getWalletBalance(walletAddress) {
+    try {
+  if (walletAddress) {
+
+    const balanceResponse =
+      await request(
+        `/api/v1/blockchain/balance/${walletAddress}`
+      );
+
+    const user = JSON.parse(sessionStorage.getItem("user") || "{}");
+
+    const isVerified =
+      balanceResponse &&
+      balanceResponse &&
+      balanceResponse.eth.balance_eth !== undefined &&
+      balanceResponse.eth.balance_eth !== null;
+    const updatedUser = {
+      ...user,
+      balance:
+        balanceResponse.eth.balance_eth || 0,
+      verificationStatus:
+        isVerified
+          ? "Verified"
+          : "UnVerified",
+      balanceTokens: balanceResponse.sec_tokens.balance_kwh || 0,
+    };
+
+    sessionStorage.setItem(
+      "user",
+      JSON.stringify(updatedUser)
+    );
+
+    sessionStorage.setItem(
+      "wallet_balance",
+      JSON.stringify(balanceResponse)
+    );
+
+  }
+
+} catch (error) {
+
+  console.error(
+    "Failed to fetch wallet balance",
+    error
   );
+
+  const updatedUser = {
+    ...JSON.parse(sessionStorage.getItem("user") || "{}"),
+    balance: 0,
+    verificationStatus:
+      "UnVerified",
+  };
+
+  sessionStorage.setItem(
+    "user",
+    JSON.stringify(updatedUser)
+  );
+}
 },
 
 getPublicListings(params = "") {
