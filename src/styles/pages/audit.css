@@ -150,6 +150,8 @@
   padding: 16px;
 
   background: #fff;
+  word-break: break-all;
+  overflow-wrap: break-word;
 }
 
 .event-header {
