@@ -13,7 +13,6 @@ import LoginPage from "./pages/LoginPage";
 import DashboardPage from "./pages/DashboardPage";
 import CreditActionsPage from "./pages/CreditActionsPage";
 import MarketplacePage from "./pages/MarketplacePage";
-import AuditTrailPage from "./pages/AuditTrailPage";
 
 import Layout from "./components/Layout";
 import GlobalLoader from "./components/GlobalLoader";

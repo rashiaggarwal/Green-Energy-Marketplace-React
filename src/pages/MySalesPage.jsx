@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { apiClient } from "../services/apiClient";
+import AuditTrailModel from "../components/AuditTrailModel";
 
 export default function MySalesPage() {
 
@@ -8,6 +9,11 @@ export default function MySalesPage() {
 
   const [loading, setLoading] =
     useState(true);
+
+  const [toast, setToast] = useState(null);
+
+  const [auditLoading, setAuditLoading] =
+  useState(false);
 
   useEffect(() => {
     loadSales();
@@ -39,6 +45,44 @@ export default function MySalesPage() {
 
     }
   }
+
+    const handleViewAudit =
+  async (listingId) => {
+
+    try {
+
+      setAuditLoading(true);
+
+      const audit =
+        await apiClient.getListingAuditTrace(
+          listingId
+        );
+
+      setSelectedAudit(audit);
+
+      setAuditModalOpen(true);
+
+    } catch {
+
+      setToast({
+        type: "error",
+        message:
+          "Unable to load audit trail.",
+      });
+
+    } finally {
+
+      setAuditLoading(false);
+
+    }
+
+};
+
+const [auditModalOpen, setAuditModalOpen] =
+  useState(false);
+
+const [selectedAudit, setSelectedAudit] =
+  useState(null);
 
   const totalSales =
     sales.length;
@@ -254,29 +298,34 @@ export default function MySalesPage() {
 
 </div>
 
-            {sale.blockchain_tx_hash && (
+            {/* {sale.blockchain_tx_hash && (
 
               <div
                 className="tx-section"
               >
 
-                <small>
-                  🔗 Blockchain TX
-                </small>
-
                 <div className="hash">
-                    {
-                        sale.blockchain_tx_hash?.slice(
-                        0,
-                        20
-                        )
-                    }
-                    ...
+                    {sale.blockchain_tx_hash && (
+                  <a href={`https://sepolia.etherscan.io/tx/${sale.blockchain_tx_hash}`} target="_blank" rel="noopener noreferrer">
+                    🔗 View Blockchain Transaction
+                  </a>
+                )}
                 </div>
 
               </div>
 
-            )}
+            )} */}
+            <div style={{textAlign: "center", marginTop: 12, width: "100%"}}>
+                    <button
+                      className="audit-btn"
+                      style={{width: "100%"}}
+                      onClick={() =>
+                        handleViewAudit(sale.listing_id)
+                      }
+                    >
+                      View Audit
+                    </button>
+                  </div>
 
             {sale.consume_tx_hash && (
 
@@ -311,6 +360,15 @@ export default function MySalesPage() {
         ))}
 
       </div>
+
+      <AuditTrailModel
+        open={auditModalOpen}
+        audit={selectedAudit}
+        type='listing'
+        onClose={() =>
+          setAuditModalOpen(false)
+        }
+      />
     </>
   );
 }

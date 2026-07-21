@@ -92,7 +92,7 @@ export default function Sidebar() {
             isActive ? "active" : ""
           }
         >
-          📜 Analytics
+          📊 Analytics
         </NavLink>
 
       </nav>

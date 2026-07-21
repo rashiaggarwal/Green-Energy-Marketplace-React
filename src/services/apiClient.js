@@ -368,6 +368,15 @@ getPublicListings(params = "") {
   );
 },
 
+async getPurchaseById(id) {
+  return request(
+    `/api/v1/purchases/${id}`,
+    {
+      method: "GET",
+    }
+  );
+},
+
 getPublicActiveListings(params = "") {
   return request(
     `/api/v1/public/listings/active${params}`

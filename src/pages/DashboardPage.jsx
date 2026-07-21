@@ -246,6 +246,29 @@ function getSourceClass(src) {
     setModalOpen(true);
   };
 
+  const handlePurchaseAudit =
+async (purchaseId) => {
+
+  try {
+
+    setAuditLoading(true);
+
+    const purchase =
+      await apiClient.getPurchaseById(
+        purchaseId
+      );
+
+    setSelectedAudit(purchase);
+
+    setAuditModalOpen(true);
+
+  } finally {
+
+    setAuditLoading(false);
+
+  }
+};
+
 const consumeCredit = async (
   purchaseId
 ) => {
@@ -578,8 +601,8 @@ const consumeCredit = async (
       Cancelled
     </option>
 
-    <option value="EXPIRED">
-      Expired
+    <option value="CONSUMED">
+      Consumed
     </option>
   </select>
 
@@ -728,7 +751,7 @@ const consumeCredit = async (
                      <button
                       className="audit-btn"
                       onClick={() =>
-                        handleViewAudit(p.id)
+                        handlePurchaseAudit(p.id)
                       }
                     >
                       View Audit
@@ -756,6 +779,7 @@ const consumeCredit = async (
             <AuditTrailModel
               open={auditModalOpen}
               audit={selectedAudit}
+              type={user.role=='BUYER' ? 'purchase' : 'listing'}
               onClose={() =>
                 setAuditModalOpen(false)
               }
