@@ -349,7 +349,7 @@ async logoutUser() {
 
         body: JSON.stringify({
           question,
-          top_k: 5,
+          top_k: 8,
         }),
       }
     ).then((res) =>
